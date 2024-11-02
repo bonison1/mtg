@@ -1,0 +1,243 @@
+/* General Page Layout */
+.discover {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+/* Left section containing dropdown and shops */
+.leftSection {
+  flex: 1;
+  margin-right: 20px;
+}
+
+/* Top Bar - align search and dropdown horizontally */
+.topBar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px; /* Add spacing between the dropdown and search bar */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Dropdown and Search Bar */
+.categoryDropdown, .searchBar {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 250px;
+}
+
+/* Search Button */
+.searchButton {
+  padding: 12px 20px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.searchButton:hover {
+  background-color: #4cae4c;
+}
+
+/* Shop Section */
+.categories {
+  margin-top: 0;
+}
+
+.category {
+  margin-bottom: 30px;
+}
+
+.shopList {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.shopCard {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: left;
+  width: calc(25% - 20px); /* 4 cards per row on desktop */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.shopCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.shopPhoto {
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* Right section for the videos */
+.videoSection {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.videoColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Video reel size with vertical aspect ratio */
+.reelVideo {
+  width: 100%;
+  height: 533px; /* 9:16 aspect ratio for a reel-style video */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.loadMoreButton, .moreVideosButton {
+  padding: 10px 20px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loadMoreButton:hover, .moreVideosButton:hover {
+  background-color: #4cae4c;
+}
+
+/* Pagination Controls */
+.pagination {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.paginationButton {
+  padding: 10px 20px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: #4cae4c;
+}
+
+.paginationButton:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.pageNumber {
+  margin: 0 10px;
+}
+
+/* Modal Styles */
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.shopPhoto {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Media Queries for Mobile View */
+@media (max-width: 768px) {
+  .discover {
+    flex-direction: column;
+  }
+
+  .topBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .categoryDropdown, .searchBar {
+    width: 100%; /* Full width on mobile */
+  }
+
+  .shopList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .shopCard {
+    width: 100%; /* Full width for shop cards on mobile */
+  }
+
+  .videoSection {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .reelVideo {
+    height: 400px; /* Adjust video height for mobile */
+  }
+
+  /* Adjust modal content for smaller screens */
+  .modalContent {
+    max-width: 90%;
+  }
+}

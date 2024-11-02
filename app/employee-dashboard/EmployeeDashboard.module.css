@@ -1,0 +1,171 @@
+/* Page layout styling */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+  
+  /* Main content styling */
+  .mainContent {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin: 20px auto;
+    flex-grow: 1; /* Ensures main content takes available space between header and footer */
+    width: 90%; /* Center content on page */
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  /* Group container styling */
+  .groupContainer {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+  }
+  
+  /* Align groups in a single row */
+  .groupsRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  
+  /* Group title styling */
+  .groupTitle {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #025200;
+    margin-bottom: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  /* Column field styling within each group */
+  .tableCell {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .fieldGroup {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  /* Input and select field styling */
+  .formInput,
+  .formSelect {
+    width: 100%;
+    padding: 12px;
+    padding-top: 18px; /* Room for floating label */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    background-color: #fff;
+  }
+  
+  .formInput:focus,
+  .formSelect:focus {
+    border-color: #025200;
+    outline: none;
+    box-shadow: 0 0 5px rgba(2, 82, 0, 0.3);
+  }
+  
+  /* Floating label styling */
+  .floatingLabel {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 0.8rem;
+    color: #888;
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+  
+  .formInput:focus ~ .floatingLabel,
+  .formInput:not(:placeholder-shown) ~ .floatingLabel,
+  .formSelect:focus ~ .floatingLabel,
+  .formSelect:not(:placeholder-shown) ~ .floatingLabel {
+    top: -8px;
+    font-size: 0.7rem;
+    color: #333;
+  }
+  
+  /* Ensure read-only fields have a distinct style */
+  .readOnlyInput {
+    background-color: #f0f0f0;
+    color: #666;
+    cursor: not-allowed;
+  }
+  
+  /* Checkbox styling */
+  .checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .checkboxLabel {
+    margin-left: 8px;
+    font-size: 0.9rem;
+  }
+  
+  /* Button styling */
+  .button {
+    background-color: #025200;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #014101;
+  }
+  
+  .button:focus {
+    outline: none;
+  }
+  
+  /* Message styling */
+  .message {
+    text-align: center;
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  
+  .messageSuccess {
+    color: green;
+  }
+  
+  .messageError {
+    color: red;
+  }
+  
