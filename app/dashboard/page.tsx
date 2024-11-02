@@ -7,6 +7,7 @@ import { supabase } from '../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Image from 'next/image';
 import styles from './Dashboard.module.css';
 
 type User = {
@@ -17,7 +18,7 @@ type User = {
   business_name?: string;
   business_address?: string;
   product_service?: string;
-  photo?: string; // Add photo property
+  photo?: string;
 };
 
 type Message = {
@@ -43,14 +44,13 @@ export default function Dashboard() {
 
   const fetchAllUsers = async () => {
     try {
-      const { data, error } = await supabase.from('users').select('*'); // Fetch all user data
+      const { data, error } = await supabase.from('users').select('*');
       if (error) {
         console.error('Error fetching users:', error.message);
       } else {
         setAllUsers(data || []);
-        // Filter out business owners
         const owners = data?.filter(user => user.is_business_owner) || [];
-        setBusinessOwners(owners); // Set business owners state
+        setBusinessOwners(owners);
       }
     } catch (error) {
       console.error('Unexpected error fetching users:', error);
@@ -67,7 +67,7 @@ export default function Dashboard() {
       .select(`
         message_content,
         timestamp,
-        sender_id: sender_id (
+        sender_id (
           name
         )
       `)
@@ -77,8 +77,8 @@ export default function Dashboard() {
     if (error) {
       console.error('Error fetching incoming messages:', error.message);
     } else {
-      const formattedMessages = data.map((msg) => ({
-        sender_name: msg.sender_id?.name || 'Unknown',
+      const formattedMessages = data.map((msg: { message_content: string; timestamp: string; sender_id: { name: string }[] }) => ({
+        sender_name: msg.sender_id?.[0]?.name || 'Unknown',
         message_content: msg.message_content,
         timestamp: msg.timestamp,
       }));
@@ -121,7 +121,7 @@ export default function Dashboard() {
       const filteredSuggestions = allUsers.filter(
         (user) =>
           user.name.toLowerCase().includes(searchValue.toLowerCase()) &&
-          !contacts.some(contact => contact.user_id === user.user_id) // Exclude users already in contacts
+          !contacts.some(contact => contact.user_id === user.user_id)
       );
       setSuggestions(filteredSuggestions);
     } else {
@@ -150,7 +150,7 @@ export default function Dashboard() {
       console.error('Error adding to contacts:', error.message);
     } else {
       alert(`Added ${user.name} to contacts.`);
-      setContacts([...contacts, user]); // Update contacts state
+      setContacts([...contacts, user]);
     }
   };
 
@@ -225,7 +225,7 @@ export default function Dashboard() {
                 <h3>{owner.business_name || 'N/A'}</h3>
                 <p>Address: {owner.business_address || 'N/A'}</p>
                 <p>Product/Service: {owner.product_service || 'N/A'}</p>
-                <img src={owner.photo || '/photo_icon.jpg'} alt="Business" className={styles.businessPhoto} />
+                <Image src={owner.photo || '/photo_icon.jpg'} alt="Business" width={100} height={100} className={styles.businessPhoto} />
               </div>
             ))}
           </div>

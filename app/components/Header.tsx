@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FiMenu } from 'react-icons/fi';
 import styles from './GlobalHeader.module.css';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -40,7 +41,7 @@ const Header: React.FC = () => {
       {/* Logo Section */}
       <div className={styles.logo}>
         <Link href="/home" passHref>
-          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
+          <Image src="/logo.png" alt="Logo" className={styles.logoImage} />
         </Link>
       </div>
 

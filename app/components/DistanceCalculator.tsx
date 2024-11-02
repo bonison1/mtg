@@ -35,7 +35,12 @@ const DistanceCalculator = () => {
       const response = await fetch(`/api/autocomplete?input=${input}`);
       if (!response.ok) throw new Error("Error fetching suggestions");
       const data = await response.json();
-      const suggestions = data.predictions.map((prediction: any) => ({
+      interface Prediction {
+        description: string;
+        geometry: { location: { lat: number; lng: number } };
+      }
+
+      const suggestions = data.predictions.map((prediction: Prediction) => ({
         description: prediction.description,
         latitude: prediction.geometry.location.lat,
         longitude: prediction.geometry.location.lng,
