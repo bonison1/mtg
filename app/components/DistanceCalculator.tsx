@@ -1,17 +1,11 @@
 "use client";
+
 import { useState } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMapEvents } from 'react-leaflet';
-import L, { LeafletMouseEvent } from 'leaflet';
+import { LeafletMouseEvent } from 'leaflet';
 import polyline from '@mapbox/polyline';
 import 'leaflet/dist/leaflet.css';
-import styles from './DistanceCalculator.module.css';
-
-// Setting default marker icon paths
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/marker-icon-2x.png',
-  iconUrl: '/marker-icon.png',
-  shadowUrl: '/marker-shadow.png',
-});
+import './DistanceCalculator.module.css';  // We'll create this file next
 
 interface Suggestion {
   description: string;
@@ -24,88 +18,83 @@ const DistanceCalculator = () => {
   const [destination, setDestination] = useState<string>("");
   const [originCoords, setOriginCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [destinationCoords, setDestinationCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const [originSuggestions, setOriginSuggestions] = useState<Suggestion[]>([]);
-  const [destinationSuggestions, setDestinationSuggestions] = useState<Suggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [distance, setDistance] = useState<string | null>(null);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [routeCoordinates, setRouteCoordinates] = useState<Array<[number, number]>>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [clickCount, setClickCount] = useState(0);
+  const [activeInput, setActiveInput] = useState<'origin' | 'destination' | null>(null);
 
-  const fetchSuggestions = async (input: string, setSuggestions: React.Dispatch<React.SetStateAction<Suggestion[]>>) => {
+  const fetchSuggestions = async (input: string) => {
+    if (!input.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    
     try {
       const response = await fetch(`/api/autocomplete?input=${input}`);
-      if (!response.ok) throw new Error("Error fetching suggestions");
-      const data = await response.json();
-      interface Prediction {
-        description: string;
-        geometry: { location: { lat: number; lng: number } };
+      if (!response.ok) {
+        console.error("Error fetching suggestions:", response.statusText);
+        return;
       }
-
-      const suggestions = data.predictions.map((prediction: Prediction) => ({
+      const data = await response.json();
+      const suggestions = data.predictions.map((prediction: any) => ({
         description: prediction.description,
         latitude: prediction.geometry.location.lat,
         longitude: prediction.geometry.location.lng,
       }));
       setSuggestions(suggestions);
+      setShowSuggestions(true);
     } catch (error) {
-      console.error("Autocomplete fetch error:", error);
-      setError("Could not fetch suggestions. Please try again.");
+      console.error("Fetch error:", error);
     }
   };
 
   const calculateDistance = async () => {
-    setDistance("Calculating...");
     if (!originCoords || !destinationCoords) {
-      setDistance("Please select both origin and destination.");
+      alert("Please select both origin and destination locations");
       return;
     }
-  
+
+    setDistance("Calculating...");
     const origin = `${originCoords.lat},${originCoords.lng}`;
     const destination = `${destinationCoords.lat},${destinationCoords.lng}`;
-  
+
     try {
       const response = await fetch(`/api/distance-matrix?origin=${origin}&destination=${destination}`);
-      if (!response.ok) throw new Error("Distance Matrix request failed");
-  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error fetching distance:", response.statusText, errorText);
+        setDistance("Error calculating distance");
+        return;
+      }
       const data = await response.json();
-      console.log("Full Distance API Response:", data); // Log the entire response
-  
-      // Directly access the `distance` value
-      const distanceElement = data.rows[0].elements[0];
-      const distanceInMeters = distanceElement.distance; // Use `distance` directly, not `.value`
-      const polylineData = distanceElement.polyline;
-  
-      if (distanceInMeters !== undefined) {
-        const distanceInKm = (distanceInMeters / 1000).toFixed(2); // Convert meters to kilometers
-        setDistance(`${distanceInKm} km`);
-      } else {
-        setDistance("Distance data not available");
-        console.warn("Distance data is missing in response:", distanceElement);
-      }
-  
-      // Decode the polyline if available, to draw the route on the map
-      if (polylineData) {
-        const decodedPolyline = polyline.decode(polylineData);
-        setRouteCoordinates(decodedPolyline);
-      } else {
-        console.warn("Polyline data not available in response:", distanceElement);
-        setRouteCoordinates([]);
-      }
+
+      const distanceInMeters = data.rows[0].elements[0].distance;
+      const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+      setDistance(`${distanceInKm} km`);
+
+      const routePolyline = data.rows[0].elements[0].polyline;
+      const decodedPolyline = polyline.decode(routePolyline);
+      setRouteCoordinates(decodedPolyline);
     } catch (error) {
-      console.error("Distance calculation error:", error);
+      console.error("Fetch error:", error);
       setDistance("Error calculating distance");
     }
   };
-  
+
   const MapClickHandler = () => {
     useMapEvents({
       click(e: LeafletMouseEvent) {
         const selectedCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
-
-        if (!originCoords) {
+        
+        if (clickCount === 0) {
           setOriginCoords(selectedCoords);
+          setClickCount(1);
           reverseGeocode(selectedCoords, setOrigin);
         } else {
           setDestinationCoords(selectedCoords);
+          setClickCount(0);
           reverseGeocode(selectedCoords, setDestination);
         }
       },
@@ -119,78 +108,117 @@ const DistanceCalculator = () => {
       const data = await response.json();
       setLocation(data.place_name || "Selected Location");
     } catch (error) {
-      console.error("Reverse geocode error:", error);
-      setLocation("Location not found");
+      console.error("Error reverse geocoding:", error);
+      setLocation("Selected Location");
     }
   };
 
+  const handleInputFocus = (inputType: 'origin' | 'destination') => {
+    setActiveInput(inputType);
+    setShowSuggestions(true);
+  };
+
+  const handleInputBlur = () => {
+    // Delay hiding suggestions to allow for clicks on the suggestions
+    setTimeout(() => {
+      setActiveInput(null);
+      setShowSuggestions(false);
+    }, 200);
+  };
+
   return (
-    <div className={styles.distanceCalculator}>
-      <div className={styles.inputSection}>
-        <input
-          type="text"
-          value={origin}
-          onChange={(e) => {
-            setOrigin(e.target.value);
-            fetchSuggestions(e.target.value, setOriginSuggestions);
-          }}
-          placeholder="Enter origin"
-          className={styles.inputField}
-        />
-        {originSuggestions.length > 0 && (
-          <ul className={styles.suggestionsList}>
-            {originSuggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                onClick={() => {
-                  setOrigin(suggestion.description);
-                  setOriginCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
-                  setOriginSuggestions([]);
-                }}
-              >
-                {suggestion.description}
-              </li>
-            ))}
-          </ul>
-        )}
+    <div className="distance-calculator-container">
+      <div className="input-section">
+        <h1 className="title">Distance Calculator</h1>
+        
+        <div className="input-wrapper">
+          <label className="input-label">Origin</label>
+          <input
+            className="location-input"
+            type="text"
+            value={origin}
+            onChange={(e) => {
+              setOrigin(e.target.value);
+              fetchSuggestions(e.target.value);
+            }}
+            placeholder="Enter origin location"
+            onFocus={() => handleInputFocus('origin')}
+            onBlur={handleInputBlur}
+          />
+          {showSuggestions && activeInput === 'origin' && (
+            <ul className="suggestions-list">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  className="suggestion-item"
+                  key={index}
+                  onClick={() => {
+                    setOrigin(suggestion.description);
+                    setOriginCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
+                    setShowSuggestions(false);
+                  }}
+                >
+                  {suggestion.description}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-        <input
-          type="text"
-          value={destination}
-          onChange={(e) => {
-            setDestination(e.target.value);
-            fetchSuggestions(e.target.value, setDestinationSuggestions);
-          }}
-          placeholder="Enter destination"
-          className={styles.inputField}
-        />
-        {destinationSuggestions.length > 0 && (
-          <ul className={styles.suggestionsList}>
-            {destinationSuggestions.map((suggestion, index) => (
-              <li
-                key={index}
-                onClick={() => {
-                  setDestination(suggestion.description);
-                  setDestinationCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
-                  setDestinationSuggestions([]);
-                }}
-              >
-                {suggestion.description}
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="input-wrapper">
+          <label className="input-label">Destination</label>
+          <input
+            className="location-input"
+            type="text"
+            value={destination}
+            onChange={(e) => {
+              setDestination(e.target.value);
+              fetchSuggestions(e.target.value);
+            }}
+            placeholder="Enter destination location"
+            onFocus={() => handleInputFocus('destination')}
+            onBlur={handleInputBlur}
+          />
+          {showSuggestions && activeInput === 'destination' && (
+            <ul className="suggestions-list">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  className="suggestion-item"
+                  key={index}
+                  onClick={() => {
+                    setDestination(suggestion.description);
+                    setDestinationCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
+                    setShowSuggestions(false);
+                  }}
+                >
+                  {suggestion.description}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-        <button onClick={calculateDistance} className={styles.calculateButton}>Calculate Distance</button>
-        <p className={styles.distanceDisplay}>Distance: {distance || ""}</p>
-        {error && <p className={styles.error}>{error}</p>}
+        <button className="calculate-button" onClick={calculateDistance}>
+          Calculate Distance
+        </button>
+        
+        {distance && (
+          <div className="distance-result">
+            <span className="distance-label">Total Distance:</span>
+            <span className="distance-value">{distance}</span>
+          </div>
+        )}
+        
+        <div className="instructions">
+          <p>You can also click on the map to select locations</p>
+          <p>First click: Origin | Second click: Destination</p>
+        </div>
       </div>
 
-      <div className={styles.mapSection}>
-        <MapContainer center={[20.5937, 78.9629]} zoom={5} style={{ height: "100%", width: "100%" }}>
+      <div className="map-container">
+        <MapContainer center={[20.5937, 78.9629]} zoom={5}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; OpenStreetMap contributors'
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
           />
           {originCoords && (
             <Marker position={[originCoords.lat, originCoords.lng]}>
@@ -203,7 +231,7 @@ const DistanceCalculator = () => {
             </Marker>
           )}
           {routeCoordinates.length > 0 && (
-            <Polyline positions={routeCoordinates} color="blue" />
+            <Polyline positions={routeCoordinates} color="blue" weight={3} />
           )}
           <MapClickHandler />
         </MapContainer>

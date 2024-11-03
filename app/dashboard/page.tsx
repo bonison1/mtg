@@ -1,10 +1,7 @@
-// app/dashboard/page.tsx
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
@@ -34,7 +31,6 @@ export default function Dashboard() {
   const [incomingMessages, setIncomingMessages] = useState<Message[]>([]);
   const [contacts, setContacts] = useState<User[]>([]);
   const [businessOwners, setBusinessOwners] = useState<User[]>([]);
-  const router = useRouter();
 
   useEffect(() => {
     fetchAllUsers();

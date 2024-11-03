@@ -5,33 +5,30 @@ export async function GET(req: Request) {
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
 
-  if (!origin || !destination) {
-    return NextResponse.json({ error: "Origin and destination parameters are required" }, { status: 400 });
-  }
-
   try {
-    const tokenResponse = await fetch("http://localhost:3000/api/token");
+    const tokenResponse = await fetch("http://localhost:3001/api/token");
     if (!tokenResponse.ok) {
-      console.error("Error fetching token:", tokenResponse.statusText);
-      return NextResponse.json({ error: "Failed to retrieve token" }, { status: tokenResponse.status });
+      console.error("Error retrieving token:", tokenResponse.statusText);
+      return NextResponse.json({ error: "Failed to retrieve token" }, { status: 500 });
     }
 
     const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
+    const access_token = tokenData.access_token;
 
-    if (!accessToken) {
-      console.error("No access token in token response");
-      return NextResponse.json({ error: "Token retrieval error" }, { status: 500 });
+    if (!access_token) {
+      console.error("Error: Missing access token.");
+      return NextResponse.json({ error: "Failed to retrieve token" }, { status: 500 });
     }
 
-    const response = await fetch(`https://api.olamaps.io/routing/v1/distanceMatrix?origins=${origin}&destinations=${destination}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const url = `https://api.olamaps.io/routing/v1/distanceMatrix?origins=${origin}&destinations=${destination}`;
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${access_token}` },
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Distance Matrix API Error:", response.statusText, errorText);
-      return NextResponse.json({ error: "Distance Matrix request failed" }, { status: response.status });
+      return NextResponse.json({ error: "Distance Matrix request failed" }, { status: 500 });
     }
 
     const data = await response.json();

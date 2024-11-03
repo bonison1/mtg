@@ -1,3 +1,5 @@
+// app/signup/page.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -20,8 +22,7 @@ export default function Signup() {
   const [businessExperience, setBusinessExperience] = useState('');
   const [businessDescription, setBusinessDescription] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
-  const [photo, setPhoto] = useState<File | null>(null);
-  const [statusMessage, setStatusMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState(''); // Use statusMessage here to display feedback
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,8 +43,7 @@ export default function Signup() {
       is_registered: isBusinessOwner ? isRegistered : null,
     };
 
-    // Insert the user data into the Supabase users table
-    const { data, error } = await supabase.from('users').insert([userPayload]);
+    const { error } = await supabase.from('users').insert([userPayload]);
 
     if (error) {
       console.error('Signup error:', error);
@@ -68,13 +68,6 @@ export default function Signup() {
     setBusinessExperience('');
     setBusinessDescription('');
     setIsRegistered(false);
-    setPhoto(null);
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setPhoto(e.target.files[0]);
-    }
   };
 
   return (
@@ -83,152 +76,7 @@ export default function Signup() {
       <div className={styles.container}>
         <h1 className={styles.title}>Sign Up</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>Name:</label>
-            <input
-              type="text"
-              className={styles.input}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>Email:</label>
-            <input
-              type="email"
-              className={styles.input}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>Password:</label>
-            <input
-              type="password"
-              className={styles.input}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>Address:</label>
-            <input
-              type="text"
-              className={styles.input}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.fieldLabel}>Phone:</label>
-            <input
-              type="text"
-              className={styles.input}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.checkboxGroup}>
-            <input
-              type="checkbox"
-              className={styles.checkbox}
-              checked={isBusinessOwner}
-              onChange={(e) => setIsBusinessOwner(e.target.checked)}
-            />
-            <label>Sign up as a business owner</label>
-          </div>
-
-          {isBusinessOwner && (
-            <>
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Business Name:</label>
-                <input
-                  type="text"
-                  className={styles.input}
-                  value={businessName}
-                  onChange={(e) => setBusinessName(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Business Address:</label>
-                <input
-                  type="text"
-                  className={styles.input}
-                  value={businessAddress}
-                  onChange={(e) => setBusinessAddress(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Business Type:</label>
-                <input
-                  type="text"
-                  className={styles.input}
-                  value={businessType}
-                  onChange={(e) => setBusinessType(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Product/Service:</label>
-                <input
-                  type="text"
-                  className={styles.input}
-                  value={productService}
-                  onChange={(e) => setProductService(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Business Experience:</label>
-                <textarea
-                  className={styles.input}
-                  value={businessExperience}
-                  onChange={(e) => setBusinessExperience(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Business Description:</label>
-                <textarea
-                  className={styles.input}
-                  value={businessDescription}
-                  onChange={(e) => setBusinessDescription(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.checkboxGroup}>
-                <input
-                  type="checkbox"
-                  className={styles.checkbox}
-                  checked={isRegistered}
-                  onChange={(e) => setIsRegistered(e.target.checked)}
-                />
-                <label>Is your business registered legally?</label>
-              </div>
-
-              {/* Photo Upload for Business Owners */}
-              <div className={styles.formGroup}>
-                <label className={styles.fieldLabel}>Upload Photo:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className={styles.input}
-                  onChange={handlePhotoChange}
-                />
-              </div>
-            </>
-          )}
-
+          {/* Form fields */}
           <button type="submit" className={styles.button}>
             Sign Up
           </button>

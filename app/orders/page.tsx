@@ -1,9 +1,12 @@
-"use client";
+// app/orders/page.tsx
+
+'use client';
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import styles from './OrderPage.module.css'; // Import the CSS module
-import Header from '../components/GlobalHeader.module.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import styles from './OrderPage.module.css';
 
 type OrderData = {
   id: number;
@@ -92,13 +95,14 @@ export default function OrderPage() {
   };
 
   return (
-    <div>
+    <div className={styles.orderPage}>
+      <Header />
       <h1>Orders</h1>
 
       {loading ? (
         <p>Loading orders...</p>
       ) : (
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Name</th>
@@ -132,8 +136,12 @@ export default function OrderPage() {
                 <td>{order.auto_cid}</td>
                 <td>{order.status}</td>
                 <td>
-                  <button onClick={() => handleUpdateClick(order)}>Update</button>
-                  <button onClick={() => handleDelete(order.id)}>Delete</button>
+                  <button className={styles.updateButton} onClick={() => handleUpdateClick(order)}>
+                    Update
+                  </button>
+                  <button className={styles.deleteButton} onClick={() => handleDelete(order.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -151,6 +159,7 @@ export default function OrderPage() {
                 type="text"
                 value={selectedOrder.name || ''}
                 onChange={(e) => setSelectedOrder({ ...selectedOrder, name: e.target.value })}
+                className={styles.inputField}
               />
             </label>
             <label>
@@ -159,6 +168,7 @@ export default function OrderPage() {
                 type="text"
                 value={selectedOrder.team || ''}
                 onChange={(e) => setSelectedOrder({ ...selectedOrder, team: e.target.value })}
+                className={styles.inputField}
               />
             </label>
             <label>
@@ -167,14 +177,15 @@ export default function OrderPage() {
                 type="text"
                 value={selectedOrder.pickup_name || ''}
                 onChange={(e) => setSelectedOrder({ ...selectedOrder, pickup_name: e.target.value })}
+                className={styles.inputField}
               />
             </label>
-            {/* Add more fields as necessary */}
             <label>
               Status:
               <select
                 value={selectedOrder.status || ''}
                 onChange={(e) => setSelectedOrder({ ...selectedOrder, status: e.target.value })}
+                className={styles.inputField}
               >
                 <option value="Pending">Pending</option>
                 <option value={`Delivered ${new Date().toLocaleDateString()}`}>
@@ -190,12 +201,17 @@ export default function OrderPage() {
               </select>
             </label>
             <div className={styles.modalActions}>
-              <button onClick={handleUpdate}>Save Changes</button>
-              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+              <button onClick={handleUpdate} className={styles.saveButton}>
+                Save Changes
+              </button>
+              <button onClick={() => setIsModalOpen(false)} className={styles.cancelButton}>
+                Cancel
+              </button>
             </div>
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

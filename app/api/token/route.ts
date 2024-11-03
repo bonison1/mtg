@@ -14,18 +14,12 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Token retrieval failed:", response.status, response.statusText, errorText);
+      console.error("Token retrieval failed:", response.statusText);
       return NextResponse.json({ error: "Failed to retrieve token" }, { status: response.status });
     }
 
     const data = await response.json();
-    if (!data.access_token) {
-      console.error("Token response missing 'access_token' field");
-      return NextResponse.json({ error: "Invalid token response" }, { status: 500 });
-    }
-
-    console.log("Token data retrieved successfully:", data);
+    console.log("Token data:", data); // Log token data for debugging
     return NextResponse.json(data);
   } catch (error) {
     console.error("Unexpected error in token retrieval:", error);

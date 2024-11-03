@@ -4,33 +4,25 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const input = searchParams.get("input");
 
-  if (!input) {
-    return NextResponse.json({ error: "Input parameter is required" }, { status: 400 });
-  }
-
   try {
-    const tokenResponse = await fetch("http://localhost:3000/api/token");
-    if (!tokenResponse.ok) {
-      console.error("Error fetching token:", tokenResponse.statusText);
-      return NextResponse.json({ error: "Failed to retrieve token" }, { status: tokenResponse.status });
-    }
-
+    const tokenResponse = await fetch("http://localhost:3001/api/token");
     const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
+    const access_token = tokenData.access_token;
 
-    if (!accessToken) {
-      console.error("No access token in token response");
-      return NextResponse.json({ error: "Token retrieval error" }, { status: 500 });
+    if (!access_token) {
+      console.error("Error: Missing access token.");
+      return NextResponse.json({ error: "Failed to retrieve token" }, { status: 500 });
     }
 
-    const response = await fetch(`https://api.olamaps.io/places/v1/autocomplete?input=${input}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+    const url = `https://api.olamaps.io/places/v1/autocomplete?input=${input}`;
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${access_token}` },
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Autocomplete API Error:", response.statusText, errorText);
-      return NextResponse.json({ error: "Autocomplete request failed" }, { status: response.status });
+      return NextResponse.json({ error: "Autocomplete request failed" }, { status: 500 });
     }
 
     const data = await response.json();

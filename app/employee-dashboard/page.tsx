@@ -1,6 +1,8 @@
+// app/employee-dashboard/page.tsx
+
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
@@ -29,11 +31,8 @@ export default function EmployeeDashboard() {
   const router = useRouter();
   const formattedDate = new Date().toISOString().split('T')[0];
 
-  useEffect(() => {
-    calculateAutoValues();
-  }, [dc, pb, pbAmount, dcAmount]);
-
-  const calculateAutoValues = () => {
+  // Using useCallback to avoid dependency warning in useEffect
+  const calculateAutoValues = useCallback(() => {
     const pbAmt = Number(pbAmount) || 0;
     const dcAmt = Number(dcAmount) || 0;
     let tsb = 0;
@@ -68,7 +67,11 @@ export default function EmployeeDashboard() {
 
     setAutoTSB(tsb);
     setAutoCID(cid);
-  };
+  }, [pbAmount, dcAmount, pb, dc]);
+
+  useEffect(() => {
+    calculateAutoValues();
+  }, [calculateAutoValues]);
 
   const handleAddData = async () => {
     const employee = JSON.parse(sessionStorage.getItem('employee') || '{}');

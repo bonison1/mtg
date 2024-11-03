@@ -1,3 +1,5 @@
+// app/login/page.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -6,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import styles from './Login.module.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -45,37 +48,37 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Header />
-      <main className="main-content">
+      <main className={styles.mainContent}>
         <h1>Login</h1>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+          className={styles.inputField}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+          className={styles.inputField}
         />
-        <button onClick={handleLogin} style={{ width: '100%', padding: '10px' }}>
+        <button onClick={handleLogin} className={styles.loginButton}>
           Log In
         </button>
 
-        {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
 
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          <Link href="/forgot-password" style={{ color: '#0070f3', textDecoration: 'underline' }}>
+        <div className={styles.linkContainer}>
+          <Link href="/forgot-password" className={styles.link}>
             Forgot Password?
           </Link>
-          <br /><br/>
-          <Link href="/signup" style={{ color: '#0070f3', textDecoration: 'underline' }}>
-            Sign Up if you're a new user
+          <br /><br />
+          <Link href="/signup" className={styles.link}>
+            Sign Up if you&apos;re a new user
           </Link>
         </div>
       </main>
