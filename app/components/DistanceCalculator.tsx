@@ -1,11 +1,9 @@
 "use client";
-
 import { useState } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
-import polyline from '@mapbox/polyline';
+import polyline from '@mapbox/polyline';  // Use the polyline library to decode the polyline data
 import 'leaflet/dist/leaflet.css';
-import './DistanceCalculator.module.css';  // We'll create this file next
 
 interface Suggestion {
   description: string;
@@ -23,14 +21,8 @@ const DistanceCalculator = () => {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [routeCoordinates, setRouteCoordinates] = useState<Array<[number, number]>>([]);
   const [clickCount, setClickCount] = useState(0);
-  const [activeInput, setActiveInput] = useState<'origin' | 'destination' | null>(null);
 
   const fetchSuggestions = async (input: string) => {
-    if (!input.trim()) {
-      setSuggestions([]);
-      return;
-    }
-    
     try {
       const response = await fetch(`/api/autocomplete?input=${input}`);
       if (!response.ok) {
@@ -51,12 +43,12 @@ const DistanceCalculator = () => {
   };
 
   const calculateDistance = async () => {
+    setDistance("Calculating...");
     if (!originCoords || !destinationCoords) {
-      alert("Please select both origin and destination locations");
+      console.error("Both origin and destination coordinates are required");
       return;
     }
 
-    setDistance("Calculating...");
     const origin = `${originCoords.lat},${originCoords.lng}`;
     const destination = `${destinationCoords.lat},${destinationCoords.lng}`;
 
@@ -71,9 +63,10 @@ const DistanceCalculator = () => {
       const data = await response.json();
 
       const distanceInMeters = data.rows[0].elements[0].distance;
-      const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+      const distanceInKm = (distanceInMeters / 1000).toFixed(2); // Convert and round to 2 decimals
       setDistance(`${distanceInKm} km`);
 
+      // Decode polyline for route display
       const routePolyline = data.rows[0].elements[0].polyline;
       const decodedPolyline = polyline.decode(routePolyline);
       setRouteCoordinates(decodedPolyline);
@@ -113,109 +106,69 @@ const DistanceCalculator = () => {
     }
   };
 
-  const handleInputFocus = (inputType: 'origin' | 'destination') => {
-    setActiveInput(inputType);
-    setShowSuggestions(true);
-  };
-
-  const handleInputBlur = () => {
-    // Delay hiding suggestions to allow for clicks on the suggestions
-    setTimeout(() => {
-      setActiveInput(null);
-      setShowSuggestions(false);
-    }, 200);
-  };
-
   return (
-    <div className="distance-calculator-container">
-      <div className="input-section">
-        <h1 className="title">Distance Calculator</h1>
-        
-        <div className="input-wrapper">
-          <label className="input-label">Origin</label>
-          <input
-            className="location-input"
-            type="text"
-            value={origin}
-            onChange={(e) => {
-              setOrigin(e.target.value);
-              fetchSuggestions(e.target.value);
-            }}
-            placeholder="Enter origin location"
-            onFocus={() => handleInputFocus('origin')}
-            onBlur={handleInputBlur}
-          />
-          {showSuggestions && activeInput === 'origin' && (
-            <ul className="suggestions-list">
-              {suggestions.map((suggestion, index) => (
-                <li
-                  className="suggestion-item"
-                  key={index}
-                  onClick={() => {
-                    setOrigin(suggestion.description);
-                    setOriginCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
-                    setShowSuggestions(false);
-                  }}
-                >
-                  {suggestion.description}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="input-wrapper">
-          <label className="input-label">Destination</label>
-          <input
-            className="location-input"
-            type="text"
-            value={destination}
-            onChange={(e) => {
-              setDestination(e.target.value);
-              fetchSuggestions(e.target.value);
-            }}
-            placeholder="Enter destination location"
-            onFocus={() => handleInputFocus('destination')}
-            onBlur={handleInputBlur}
-          />
-          {showSuggestions && activeInput === 'destination' && (
-            <ul className="suggestions-list">
-              {suggestions.map((suggestion, index) => (
-                <li
-                  className="suggestion-item"
-                  key={index}
-                  onClick={() => {
-                    setDestination(suggestion.description);
-                    setDestinationCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
-                    setShowSuggestions(false);
-                  }}
-                >
-                  {suggestion.description}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <button className="calculate-button" onClick={calculateDistance}>
-          Calculate Distance
-        </button>
-        
-        {distance && (
-          <div className="distance-result">
-            <span className="distance-label">Total Distance:</span>
-            <span className="distance-value">{distance}</span>
-          </div>
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <input
+          type="text"
+          value={origin}
+          onChange={(e) => {
+            setOrigin(e.target.value);
+            fetchSuggestions(e.target.value);
+          }}
+          placeholder="Enter origin"
+          onFocus={() => setShowSuggestions(true)}
+        />
+        {showSuggestions && (
+          <ul>
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setOrigin(suggestion.description);
+                  setOriginCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
+                  setShowSuggestions(false);
+                }}
+              >
+                {suggestion.description}
+              </li>
+            ))}
+          </ul>
         )}
-        
-        <div className="instructions">
-          <p>You can also click on the map to select locations</p>
-          <p>First click: Origin | Second click: Destination</p>
-        </div>
+
+        <input
+          type="text"
+          value={destination}
+          onChange={(e) => {
+            setDestination(e.target.value);
+            fetchSuggestions(e.target.value);
+          }}
+          placeholder="Enter destination"
+          onFocus={() => setShowSuggestions(true)}
+        />
+        {showSuggestions && (
+          <ul>
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setDestination(suggestion.description);
+                  setDestinationCoords({ lat: suggestion.latitude, lng: suggestion.longitude });
+                  setShowSuggestions(false);
+                }}
+              >
+                {suggestion.description}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <button onClick={calculateDistance}>Calculate Distance</button>
+        <p>Distance: {distance || ""}</p>
       </div>
 
-      <div className="map-container">
-        <MapContainer center={[20.5937, 78.9629]} zoom={5}>
+      <div style={{ flex: 1, height: "500px", marginLeft: "20px" }}>
+        <MapContainer center={[20.5937, 78.9629]} zoom={5} style={{ height: "100%", width: "100%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -231,7 +184,7 @@ const DistanceCalculator = () => {
             </Marker>
           )}
           {routeCoordinates.length > 0 && (
-            <Polyline positions={routeCoordinates} color="blue" weight={3} />
+            <Polyline positions={routeCoordinates} color="blue" />
           )}
           <MapClickHandler />
         </MapContainer>
