@@ -1,3 +1,5 @@
+// utils/fetchUsers.ts
+
 export async function fetchUsers() {
     const response = await fetch('https://mdxeolqfiosscdommyhc.supabase.co/rest/v1/users', {
       method: 'GET',
