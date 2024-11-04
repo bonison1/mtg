@@ -1,201 +1,68 @@
-/* DistanceCalculator.css */
-.distance-calculator-container {
+/* DistanceCalculator.module.css */
+
+.container {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: 600px;
-  background-color: #f8fafc;
+  padding: 20px;
 }
 
-.input-section {
+.inputSection {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
+.inputField {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.input-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #4b5563;
-}
-
-.location-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  background-color: white;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.location-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.location-input::placeholder {
-  color: #9ca3af;
-}
-
-.suggestions-list {
+.suggestionsList {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
   max-height: 200px;
   overflow-y: auto;
-  list-style: none;
-  padding: 0;
-}
-
-.suggestion-item {
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 0.875rem;
-  color: #4b5563;
-}
-
-.suggestion-item:hover {
-  background-color: #f3f4f6;
-}
-
-.calculate-button {
-  background-color: #3b82f6;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: fit-content;
-  margin-top: 1rem;
-}
-
-.calculate-button:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.calculate-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
-}
-
-.distance-result {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
-}
-
-.distance-label {
-  font-size: 1rem;
-  color: #4b5563;
-}
-
-.distance-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.instructions {
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.instructions p {
-  margin: 0.25rem 0;
-}
-
-.map-container {
-  flex: 1.5;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  height: 700px;
-}
-
-/* Leaflet map customizations */
-.leaflet-container {
-  height: 100%;
   width: 100%;
-  border-radius: 0.75rem;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.leaflet-popup-content-wrapper {
-  border-radius: 0.5rem;
-  padding: 0.5rem;
+.suggestionItem {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.leaflet-popup-content {
-  margin: 0.5rem;
-  font-size: 0.875rem;
-  color: #1f2937;
+.suggestionItem:hover {
+  background: #f0f0f0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .distance-calculator-container {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .map-container {
-    margin-top: 1.5rem;
-    height: 500px;
-  }
+.calculateButton {
+  padding: 10px 20px;
+  background: #025200;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-@media (max-width: 640px) {
-  .input-section {
-    padding: 1rem;
-  }
+.calculateButton:hover {
+  background: #027000;
+}
 
-  .map-container {
-    height: 400px;
-  }
-
-  .calculate-button {
-    width: 100%;
-  }
+.mapContainer {
+  flex: 3;
+  min-width: 600px;
+  height: 600px;
+  margin-left: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
