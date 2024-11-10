@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../app/components/Header';
+import Footer from '../app/components/Footer';
+import Link from 'next/link'; // Import Link from Next.js
 
 export default function EmployeeLogin() {
   const [email, setEmail] = useState('');
@@ -66,6 +67,11 @@ export default function EmployeeLogin() {
         </button>
 
         {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}
+
+        {/* Add the Sign Up Link */}
+        <div style={{ marginTop: '10px' }}>
+          <p>Don't have an account? <Link href="/employee-s" style={{ color: '#0070f3', textDecoration: 'underline' }}>Sign up</Link></p>
+        </div>
       </main>
       <Footer />
     </div>

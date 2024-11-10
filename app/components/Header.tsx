@@ -1,5 +1,3 @@
-// app/components/Header.tsx
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -48,39 +46,55 @@ const Header: React.FC = () => {
 
       {/* Navigation Menu */}
       <nav className={`${styles.nav} ${menuOpen ? styles.open : ''}`}>
-        <Link href="/home" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-          Home
-        </Link>
-        <Link href="/distance" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-          Distance
-        </Link>
-        <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-          Discover
-        </Link>
-        <Link href="/pricing" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-          Services
-        </Link>
+        
 
-        {/* Conditional Rendering for Orders and Login/Logout */}
-        {isLoggedIn || isEmployeeLoggedIn ? (
+        {/* Conditional Rendering for Logged In Users or Employees */}
+        {isLoggedIn && !isEmployeeLoggedIn && (
           <>
-            <Link href="/orders" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-              Orders
+            <Link href="/dashboard" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Home
+            </Link>
+            <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Discover
+            </Link>
+            <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Contacts
+            </Link>
+            <Link href="/view-orders" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              View my Orders
             </Link>
             <button onClick={handleLogout} className={styles.logoutButton}>
               Log Out
             </button>
           </>
-        ) : (
+        )}
+
+        {isEmployeeLoggedIn && (
           <>
+            <Link href="/employee-dashboard" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Employee Dashboard
+            </Link>
+            <Link href="/employee-dashboard" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Order Entry
+            </Link>
+            <Link href="/orders" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Orders
+            </Link>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              Employee Logout
+            </button>
+          </>
+        )}
+
+        {/* For non-logged in users */}
+        {!isLoggedIn && !isEmployeeLoggedIn && (
+          <>
+            <Link href="/home" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Home
+            </Link>
             <Link href="/login" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Log In
             </Link>
-            {!isEmployeeLoggedIn && (
-              <Link href="/employee-login" className={styles.createTaskButton} onClick={() => setMenuOpen(false)}>
-                Employee Log In
-              </Link>
-            )}
           </>
         )}
       </nav>

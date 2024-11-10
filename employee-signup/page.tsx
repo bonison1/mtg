@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../app/components/Header';
+import Footer from '../app/components/Footer';
 
 export default function EmployeeSignup() {
   const [name, setName] = useState('');

@@ -1,18 +1,16 @@
-// app/employee-dashboard/page.tsx
-
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../app/components/Header';
+import Footer from '../app/components/Footer';
 import styles from './EmployeeDashboard.module.css';
 
 export default function EmployeeDashboard() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [team, setTeam] = useState('Team1');
+  const [team, setTeam] = useState('');
   const [pickupName, setPickupName] = useState('');
   const [pickupAddress, setPickupAddress] = useState('');
   const [pickupPhone, setPickupPhone] = useState('');
@@ -28,10 +26,76 @@ export default function EmployeeDashboard() {
   const [autoCID, setAutoCID] = useState<number>(0);
   const [status, setStatus] = useState<string>('Pending');
   const [message, setMessage] = useState<string | null>(null);
+  const [nameSuggestions, setNameSuggestions] = useState<any[]>([]); // Name suggestions
+  const [teamSuggestions, setTeamSuggestions] = useState<any[]>([]); // Team suggestions
   const router = useRouter();
   const formattedDate = new Date().toISOString().split('T')[0];
 
-  // Using useCallback to avoid dependency warning in useEffect
+  // Function to fetch user names from the database
+  const fetchUserNames = async (query: string) => {
+    if (query.length < 3) { // Trigger search after typing 3 characters
+      setNameSuggestions([]);
+      return;
+    }
+    
+    const { data, error } = await supabase
+      .from('users') // Assuming 'users' is your table name
+      .select('name, email')
+      .ilike('name', `%${query}%`); // Case-insensitive search for names containing the query
+    
+    if (error) {
+      console.error('Error fetching names:', error.message);
+      return;
+    }
+    
+    setNameSuggestions(data || []);
+  };
+
+  // Function to fetch team names from the database
+  const fetchTeamNames = async (query: string) => {
+    if (query.length < 3) { // Trigger search after typing 3 characters
+      setTeamSuggestions([]);
+      return;
+    }
+    
+    const { data, error } = await supabase
+      .from('team_users') // Assuming 'team_users' is your table name
+      .select('username') // Assuming 'username' is the team name
+      .ilike('username', `%${query}%`); // Case-insensitive search for team names containing the query
+    
+    if (error) {
+      console.error('Error fetching teams:', error.message);
+      return;
+    }
+
+    setTeamSuggestions(data || []);
+  };
+
+  // Handle change in the Name input field
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+    fetchUserNames(e.target.value); // Fetch name suggestions
+  };
+
+  // Handle selecting a suggestion for Name
+  const handleNameSelect = (selectedName: string, selectedEmail: string) => {
+    setName(selectedName);
+    setEmail(selectedEmail);
+    setNameSuggestions([]); // Clear suggestions once a name is selected
+  };
+
+  // Handle change in the Team input field
+  const handleTeamChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeam(e.target.value);
+    fetchTeamNames(e.target.value); // Fetch team suggestions
+  };
+
+  // Handle selecting a suggestion for Team
+  const handleTeamSelect = (selectedTeam: string) => {
+    setTeam(selectedTeam);
+    setTeamSuggestions([]); // Clear suggestions once a team is selected
+  };
+
   const calculateAutoValues = useCallback(() => {
     const pbAmt = Number(pbAmount) || 0;
     const dcAmt = Number(dcAmount) || 0;
@@ -57,12 +121,14 @@ export default function EmployeeDashboard() {
       tsb = 0;
       cid = dcAmt;
     } else if (dc === "Due" && pb === "Due") {
-      tsb = -pbAmt - dcAmt;
-      cid = 0;
+      tsb = 0;
+      cid = -pbAmt - dcAmt;
     } else if (pb === "Prepaid" && dc === "Due") {
       tsb = -dcAmt;
+      cid = dcAmt;
     } else if (dc === "COD" && pb === "Due") {
       cid = dcAmt;
+      tsb = dcAmt+pbAmt;
     }
 
     setAutoTSB(tsb);
@@ -117,7 +183,7 @@ export default function EmployeeDashboard() {
   const resetFormFields = () => {
     setName('');
     setEmail('');
-    setTeam('Team1');
+    setTeam('');
     setPickupName('');
     setPickupAddress('');
     setPickupPhone('');
@@ -151,7 +217,7 @@ export default function EmployeeDashboard() {
 
   return (
     <div className={styles.container}>
-      <Header/>
+      <Header />
       <button onClick={handleLogout} className={styles.button} style={{ width: '100%', marginBottom: '20px' }}>
         Logout
       </button>
@@ -168,32 +234,56 @@ export default function EmployeeDashboard() {
                 type="text"
                 placeholder="Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
                 className={styles.formInput}
               />
               <label className={styles.floatingLabel}>Name</label>
+              {nameSuggestions.length > 0 && (
+                <ul className={styles.suggestionsList}>
+                  {nameSuggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.email}
+                      className={styles.suggestionItem}
+                      onClick={() => handleNameSelect(suggestion.name, suggestion.email)}
+                    >
+                      {suggestion.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div className={styles.fieldGroup}>
               <input
-                type="email"
+                type="text"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.formInput}
+                readOnly
+                className={`${styles.formInput} ${styles.readOnlyInput}`}
               />
               <label className={styles.floatingLabel}>Email</label>
             </div>
             <div className={styles.fieldGroup}>
-              <select
+              <input
+                type="text"
+                placeholder="Team"
                 value={team}
-                onChange={(e) => setTeam(e.target.value)}
-                className={styles.formSelect}
-              >
-                <option>Team1</option>
-                <option>Team2</option>
-                <option>Team3</option>
-              </select>
+                onChange={handleTeamChange}
+                className={styles.formInput}
+              />
               <label className={styles.floatingLabel}>Team</label>
+              {teamSuggestions.length > 0 && (
+                <ul className={styles.suggestionsList}>
+                  {teamSuggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.username}
+                      className={styles.suggestionItem}
+                      onClick={() => handleTeamSelect(suggestion.username)}
+                    >
+                      {suggestion.username}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
 

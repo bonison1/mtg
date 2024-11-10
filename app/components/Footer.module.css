@@ -1,12 +1,42 @@
+/* Footer.module.css */
 .footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-  }
-  
+  display: flex;
+  justify-content: space-between;  /* Space items widely across the page */
+  align-items: center;  /* Vertically align the items */
+  background-color: #222;
+  color: #fff;
+  padding: 20px 40px;  /* Horizontal padding for spacing */
+  font-size: 14px;
+  width: 100%;  /* Ensure it spans the full width */
+  position: fixed;  /* Fix the footer to the bottom of the page */
+  bottom: 0;
+  left: 0;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer a {
+  color: #4e9af1; /* Link color */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer .footer-left {
+  flex: 1;  /* Take up available space */
+}
+
+.footer .footer-center {
+  flex: 2;  /* Center part can take more space */
+  text-align: center;  /* Center-align the middle content */
+}
+
+.footer .footer-right {
+  flex: 1;  /* Take up available space */
+  text-align: right;  /* Align right for the third section (optional) */
+}
