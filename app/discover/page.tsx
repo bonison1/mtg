@@ -26,7 +26,7 @@ function BusinessModal({ business, onClose }: { business: User; onClose: () => v
       <div className={styles.modalContent}>
         <button onClick={onClose} className={styles.closeButton}>X</button>
         <h2>{business.business_name || 'Business Details'}</h2>
-        <Image src={business.photo || '/photo_icon.jpg'} alt="Business" width={150} height={150} />
+        <Image src={business.photo || '/2.jpg'} alt="Business" width={150} height={150} />
         <p><strong>Owner:</strong> {business.name}</p>
         <p><strong>Email:</strong> {business.email}</p>
         <p><strong>Address:</strong> {business.business_address || 'N/A'}</p>
@@ -137,7 +137,7 @@ export default function Dashboard() {
                   className={styles.businessOwnerBox}
                   onClick={() => setSelectedBusiness(owner)}
                 >
-                  <Image src={owner.photo || '/photo_icon.jpg'} alt="Business" width={100} height={100} className={styles.businessPhoto} />
+                  <Image src={owner.photo || '/2.jpg'} alt="Business" width={100} height={100} className={styles.businessPhoto} />
                   <h3>{owner.business_name || 'N/A'}</h3>
                   <p>Address: {owner.business_address || 'N/A'}</p>
                   <p>Product/Service: {owner.product_service || 'N/A'}</p>

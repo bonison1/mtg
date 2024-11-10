@@ -52,7 +52,7 @@ const Header: React.FC = () => {
         {isLoggedIn && !isEmployeeLoggedIn && (
           <>
             <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-              Discover
+              Home
             </Link>
             <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Contacts

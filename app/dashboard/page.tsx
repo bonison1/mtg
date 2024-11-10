@@ -1,5 +1,3 @@
-// app/dashboard/page.tsx
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -17,81 +15,115 @@ type User = {
   business_name?: string;
   business_address?: string;
   product_service?: string;
-  phone?: string;
-  website?: string;
   photo?: string;
 };
 
-function BusinessModal({ business, onClose }: { business: User; onClose: () => void }) {
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button onClick={onClose} className={styles.closeButton}>X</button>
-        <h2>{business.business_name || 'Business Details'}</h2>
-        <Image src={business.photo || '/photo_icon.jpg'} alt="Business" width={150} height={150} />
-        <p><strong>Owner:</strong> {business.name}</p>
-        <p><strong>Email:</strong> {business.email}</p>
-        <p><strong>Address:</strong> {business.business_address || 'N/A'}</p>
-        <p><strong>Product/Service:</strong> {business.product_service || 'N/A'}</p>
-        <p><strong>Phone:</strong> {business.phone || 'N/A'}</p>
-        <p><strong>Website:</strong> {business.website || 'N/A'}</p>
-      </div>
-    </div>
-  );
-}
+type Message = {
+  sender_name: string;
+  message_content: string;
+  timestamp: string;
+};
 
 export default function Dashboard() {
+  const [search, setSearch] = useState('');
+  const [suggestions, setSuggestions] = useState<User[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [incomingMessages, setIncomingMessages] = useState<Message[]>([]);
   const [contacts, setContacts] = useState<User[]>([]);
   const [businessOwners, setBusinessOwners] = useState<User[]>([]);
-  const [selectedBusiness, setSelectedBusiness] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const { data, error } = await supabase.from('users').select('*');
-        if (error) {
-          console.error('Error fetching users:', error.message);
-        } else {
-          setAllUsers(data || []);
-          const owners = data?.filter(user => user.is_business_owner) || [];
-          setBusinessOwners(owners);
-        }
-      } catch (error) {
-        console.error('Unexpected error fetching users:', error);
-      }
-    };
+    fetchAllUsers();
+    fetchIncomingMessages();
+    fetchContacts();
+  }, []);
 
-    const fetchContacts = async () => {
-      const userJson = sessionStorage.getItem('user');
-      if (!userJson) return;
-
-      const user = JSON.parse(userJson);
-      const { data, error } = await supabase
-        .from('user_contacts')
-        .select(`
-          contact_user_id (
-            user_id,
-            name,
-            email
-          )
-        `)
-        .eq('user_id', user.user_id);
-
+  const fetchAllUsers = async () => {
+    try {
+      const { data, error } = await supabase.from('users').select('*');
       if (error) {
-        console.error('Error fetching contacts:', error.message);
-        return;
+        console.error('Error fetching users:', error.message);
+      } else {
+        setAllUsers(data || []);
+        const owners = data?.filter(user => user.is_business_owner) || [];
+        setBusinessOwners(owners);
       }
+    } catch (error) {
+      console.error('Unexpected error fetching users:', error);
+    }
+  };
 
-      if (data) {
-        const contactsList = data.flatMap((entry) => entry.contact_user_id) as User[];
-        setContacts(contactsList);
-      }
-    };
+  const fetchIncomingMessages = async () => {
+    const userJson = sessionStorage.getItem('user');
+    if (!userJson) return;
 
-    fetchAllUsers(); // Fetch users
-    fetchContacts(); // Fetch contacts
-  }, [allUsers]); // Empty dependency array, so it only runs once on mount
+    const user = JSON.parse(userJson);
+    const { data, error } = await supabase
+      .from('messages')
+      .select(`
+        message_content,
+        timestamp,
+        sender_id (
+          name
+        )
+      `)
+      .eq('receiver_id', user.user_id)
+      .order('timestamp', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching incoming messages:', error.message);
+    } else {
+      const formattedMessages = data.map((msg: { message_content: string; timestamp: string; sender_id: { name: string }[] }) => ({
+        sender_name: msg.sender_id?.[0]?.name || 'Unknown',
+        message_content: msg.message_content,
+        timestamp: msg.timestamp,
+      }));
+      setIncomingMessages(formattedMessages);
+    }
+  };
+
+  const fetchContacts = async () => {
+    const userJson = sessionStorage.getItem('user');
+    if (!userJson) return;
+
+    const user = JSON.parse(userJson);
+    const { data, error } = await supabase
+      .from('user_contacts')
+      .select(`
+        contact_user_id (
+          user_id,
+          name,
+          email
+        )
+      `)
+      .eq('user_id', user.user_id);
+
+    if (error) {
+      console.error('Error fetching contacts:', error.message);
+      return;
+    }
+
+    if (data) {
+      const contactsList = data.flatMap((entry) => entry.contact_user_id) as User[];
+      setContacts(contactsList);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+    setSearch(searchValue);
+
+    if (searchValue) {
+      const filteredSuggestions = allUsers.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchValue.toLowerCase()) &&
+          !contacts.some(contact => contact.user_id === user.user_id)
+      );
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]);
+    }
+  };
 
   const addToContacts = async (user: User) => {
     const userJson = sessionStorage.getItem('user');
@@ -124,43 +156,77 @@ export default function Dashboard() {
       <div className={styles.container}>
         <h1 className={styles.title}>Dashboard</h1>
 
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search businesses and people"
+          value={search}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+        />
+
+        {/* Suggestions */}
+        {suggestions.length > 0 && (
+          <ul className={styles.suggestionsList}>
+            {suggestions.map((suggestion) => (
+              <li key={suggestion.user_id} className={styles.suggestionItem}>
+                {suggestion.name} ({suggestion.email})
+                <button onClick={() => addToContacts(suggestion)} className={styles.addContactButton}>
+                  Add to Contacts
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className={styles.dashboardLayout}>
+          {/* Contacts List */}
+          <div className={styles.contactsPanel}>
+            <h2>My Contacts</h2>
+            <ul className={styles.contactsList}>
+              {contacts.map((contact) => (
+                <li key={contact.user_id} className={styles.contactItem}>
+                  {contact.name} ({contact.email})
+                </li>
+              ))}
+              {contacts.length === 0 && <p>No contacts found.</p>}
+            </ul>
+          </div>
+
+          {/* Incoming Messages Section */}
+          <div className={styles.messagesPanel}>
+            <h2>Incoming Messages</h2>
+            {incomingMessages.length > 0 ? (
+              <ul className={styles.messagesList}>
+                {incomingMessages.map((msg, index) => (
+                  <li key={index} className={styles.messageItem}>
+                    <p><strong>From:</strong> {msg.sender_name}</p>
+                    <p><strong>Message:</strong> {msg.message_content}</p>
+                    <p><strong>Received:</strong> {new Date(msg.timestamp).toLocaleString()}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No incoming messages.</p>
+            )}
+          </div>
+        </div>
+
         {/* Business Owners Section */}
         <div className={styles.businessOwnersPanel}>
           <h2>Business Owners</h2>
           <div className={styles.businessOwnersGrid}>
-            {businessOwners.map((owner) => {
-              const isInContacts = contacts.some(contact => contact.user_id === owner.user_id);
-              return (
-                <div
-                  key={`${owner.user_id}-${owner.business_name}`} // Unique key here
-                  className={styles.businessOwnerBox}
-                  onClick={() => setSelectedBusiness(owner)}
-                >
-                  <Image src={owner.photo || '/photo_icon.jpg'} alt="Business" width={100} height={100} className={styles.businessPhoto} />
-                  <h3>{owner.business_name || 'N/A'}</h3>
-                  <p>Address: {owner.business_address || 'N/A'}</p>
-                  <p>Product/Service: {owner.product_service || 'N/A'}</p>
-                  {isInContacts ? (
-                    <button className={styles.inContactsButton} disabled>
-                      Already in Contacts
-                    </button>
-                  ) : (
-                    <button onClick={(e) => { e.stopPropagation(); addToContacts(owner); }} className={styles.addContactButton}>
-                      Add to Contacts
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+            {businessOwners.map((owner) => (
+              <div key={owner.user_id} className={styles.businessOwnerBox}>
+                <h3>{owner.business_name || 'N/A'}</h3>
+                <p>Address: {owner.business_address || 'N/A'}</p>
+                <p>Product/Service: {owner.product_service || 'N/A'}</p>
+                <Image src={owner.photo || '/photo_icon.jpg'} alt="Business" width={100} height={100} className={styles.businessPhoto} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-      {selectedBusiness && (
-        <BusinessModal
-          business={selectedBusiness}
-          onClose={() => setSelectedBusiness(null)}
-        />
-      )}
       <Footer />
     </div>
   );

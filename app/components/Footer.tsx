@@ -8,13 +8,8 @@ export default function Footer() {
       <div>
         <p>&copy; {new Date().getFullYear()} Mateng</p>
       </div>
-      <div>
+      <div className={styles['footer-right']}>
         <Link href="/about-us">About Us</Link>
-      </div>
-      <div>
-        <Link href="/service">Service Provided</Link>
-      </div>
-      <div>
         <Link href="/team-login">Team Dashboard</Link>
       </div>
       <div>

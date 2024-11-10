@@ -1,0 +1,113 @@
+/* /app/delivery-rates/delivery-rates.module.css */
+
+/* Page Wrapper Styles */
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+}
+
+/* Header Styles */
+.header {
+  position: relative; /* Not fixed anymore, allow it to be part of flow */
+  width: 100%; /* Full-width header */
+  background-color: #0070f3; /* Header background color */
+  color: white; /* Header text color */
+  padding: 10px 20px; /* Padding for the header */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for the header */
+  font-weight: bold;
+  z-index: 1000; /* Keep header above other elements */
+}
+
+/* Main Container Styles */
+.container {
+  flex: 1; /* Allow container to grow and take up available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+  background-color: #ffffff; /* Light background color */
+  padding: 20px; /* Padding for content */
+  width: 100%; /* Full width to ensure no spacing around */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Title Styles */
+.title {
+  font-size: 2rem; /* Increase font size for the title */
+  font-weight: bold; /* Make the title bold */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+/* Input Wrapper Styles */
+.inputWrapper {
+  margin: 10px 0; /* Space between input fields */
+  width: 100%; /* Full width */
+  max-width: 400px; /* Maximum width for inputs */
+}
+
+/* Label Styles */
+.label {
+  font-weight: bold; /* Make labels bold */
+  display: block; /* Stack labels above inputs */
+  margin-bottom: 5px; /* Space below the label */
+}
+
+/* Input Field Styles */
+.inputField {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Padding inside input fields */
+  border: 2px solid #0070f3; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 1rem; /* Font size for inputs */
+  font-weight: bold; /* Make text inside input bold */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.inputField:focus {
+  border-color: #005bb5; /* Darker border on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Suggestions List Styles */
+.suggestionsList {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute; /* Position below the input */
+  background-color: white; /* White background for better visibility */
+  z-index: 1000; /* Ensure it appears above other content */
+  max-height: 150px; /* Limit height */
+  overflow-y: auto; /* Add scroll if too many suggestions */
+  width: calc(100% - 4px); /* Adjust width to match input */
+}
+
+.suggestionsList li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestionsList li:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+/* Rate Display Styles */
+.rateDisplay {
+  margin-top: 20px; /* Space above the rate display */
+  font-size: 1.2rem; /* Slightly larger font size */
+  font-weight: bold; /* Make the text bold */
+}
+.rrr {
+  color: rgb(7, 92, 33); /* Footer text color */
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #0070f3; /* Footer background color */
+  color: white; /* Footer text color */
+  padding: 10px 20px; /* Padding for the footer */
+  text-align: center; /* Center the footer text */
+  width: 100%; /* Full-width footer */
+}
