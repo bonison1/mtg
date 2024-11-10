@@ -32,7 +32,7 @@ export default function Login() {
         const user = users[0];
         sessionStorage.setItem('user', JSON.stringify(user));
         alert('Login successful!');
-        router.push('/dashboard');
+        router.push('/discover');
       } else {
         setErrorMessage('Invalid email or password');
       }

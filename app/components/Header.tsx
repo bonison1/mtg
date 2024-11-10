@@ -52,9 +52,6 @@ const Header: React.FC = () => {
         {isLoggedIn && !isEmployeeLoggedIn && (
           <>
             <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-              Home
-            </Link>
-            <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Discover
             </Link>
             <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
