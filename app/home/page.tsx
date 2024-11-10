@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link"; // Import Link from next/link
 import Head from "next/head"; // Import Head from next/head
-import styles from './Home.module.css';
+import styles from './page.module.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -26,7 +26,8 @@ export default function DiscoverPage() {
   }, []);
 
   return (
-    <><div>      <Header /></div>
+    <>
+      <Header/>
       <Head>
         <title>Justmateng</title> {/* Set your custom tab name here */}
         <meta name="description" content="Your app description" />
@@ -63,7 +64,7 @@ export default function DiscoverPage() {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer/>
       </div>
     </>
   );

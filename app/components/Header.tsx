@@ -51,7 +51,7 @@ const Header: React.FC = () => {
         {/* Conditional Rendering for Logged In Users or Employees */}
         {isLoggedIn && !isEmployeeLoggedIn && (
           <>
-            <Link href="/dashboard" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+            <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Home
             </Link>
             <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
@@ -60,8 +60,11 @@ const Header: React.FC = () => {
             <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Contacts
             </Link>
-            <Link href="/view-orders" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+            <Link href="/link" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               View my Orders
+            </Link>
+            <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Delivery Rates
             </Link>
             <button onClick={handleLogout} className={styles.logoutButton}>
               Log Out
@@ -91,6 +94,9 @@ const Header: React.FC = () => {
           <>
             <Link href="/home" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Home
+            </Link>
+            <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Delivery Rates
             </Link>
             <Link href="/login" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Log In

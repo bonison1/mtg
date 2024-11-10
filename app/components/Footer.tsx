@@ -8,6 +8,9 @@ export default function Footer() {
         <p>&copy; {new Date().getFullYear()} Your App Name. All rights reserved.</p>
       </div>
       <div className={styles['footer-right']}>
+        <Link href="/about-us">About Us</Link>
+      </div>
+      <div className={styles['footer-right']}>
         <Link href="/team-login">Team Dashboard</Link>
       </div>
       <div className={styles['footer-right']}>
