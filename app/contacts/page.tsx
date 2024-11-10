@@ -54,7 +54,7 @@ export default function Contacts() {
 
     if (error) {
       console.error('Error fetching contacts:', error.message);
-      return; // Exit if there was an error
+      return;
     }
 
     if (data) {
@@ -122,8 +122,8 @@ export default function Contacts() {
 
         {/* Contacts List */}
         <ul className={styles.contactsList}>
-          {filteredContacts.map((contact) => (
-            <li key={contact.user_id} className={styles.contactItem}>
+          {filteredContacts.map((contact, index) => (
+            <li key={`${contact.user_id}-${contact.email}-${index}`} className={styles.contactItem}>
               {contact.name} ({contact.email})
               <button
                 onClick={() => openMessageModal(contact)}

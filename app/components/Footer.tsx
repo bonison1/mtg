@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div>
-        <p>&copy; {new Date().getFullYear()} © 2024 Mateng</p>
+        <p>&copy; {new Date().getFullYear()} Mateng</p>
       </div>
       <div>
         <Link href="/about-us">About Us</Link>
