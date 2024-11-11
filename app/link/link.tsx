@@ -12,7 +12,6 @@ type UserLinks = {
 
 export default function Contacts() {
   const [userLinks, setUserLinks] = useState<UserLinks | null>(null);
-  const [search, setSearch] = useState('');
 
   useEffect(() => {
     fetchUserLinks();
