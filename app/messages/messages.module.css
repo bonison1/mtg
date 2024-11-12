@@ -1,0 +1,239 @@
+/* Dashboard Layout */
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Search Input */
+  .searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .suggestionsList {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  
+  .suggestionItem {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .addContactButton {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .addContactButton:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Contacts Panel */
+  .contactsPanel {
+    margin-top: 30px;
+  }
+  
+  .contactsList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .contactItem {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contactItem button {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contactItem button:hover {
+    background-color: #218838;
+  }
+  
+  .noContactsMessage {
+    color: #888;
+    font-style: italic;
+  }
+  
+  /* Messages Panel */
+  .messagesPanel {
+    margin-top: 30px;
+  }
+  
+  .messagesList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .messageItem {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px; /* Space between messages */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .messageItem:hover {
+    background-color: #eef2f7;
+  }
+  
+  .messageItem p {
+    margin: 5px 0; /* Space between paragraphs */
+  }
+  
+  /* Incoming Messages Section */
+  .messagesPanel h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* Modal Styles */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .modalContent h2 {
+    margin-bottom: 10px;
+  }
+  
+  .messageTextarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .sendMessageButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .sendMessageButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancelButton {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .cancelButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Go Back Button */
+  .goBackButton {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .goBackButton:hover {
+    background-color: #218838;
+  }
+  
+  /* Business Owners Section */
+  .businessOwnersPanel {
+    margin-top: 30px;
+  }
+  
+  .businessOwnersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .businessOwnerBox {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .businessOwnerBox h3 {
+    margin-top: 0;
+  }
+  
+  .businessPhoto {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .dashboardLayout {
+      flex-direction: column;
+    }
+  
+    .contactsPanel, .messagesPanel, .businessOwnersPanel {
+      margin-top: 20px;
+    }
+  }
+  

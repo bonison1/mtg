@@ -28,3 +28,22 @@ footer {
   margin-top: auto;
   width: 100%;
 }
+/* styles/globals.css */
+.upload-area {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.upload-area p {
+  margin: 0;
+  color: #555;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}

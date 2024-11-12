@@ -82,3 +82,18 @@
     font-size: 14px;
   }
 }
+.uploadContainer {
+  display: flex;
+  align-items: center;
+}
+
+.photoPreview {
+  margin-right: 10px;
+}
+
+.previewImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}

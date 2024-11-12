@@ -1,5 +1,3 @@
-// app/signup/page.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -23,11 +21,26 @@ export default function Signup() {
   const [businessDescription, setBusinessDescription] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);  // State for preview URL
   const [statusMessage, setStatusMessage] = useState('');
+
+  // Handle the file input change and generate the preview
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setPhoto(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreviewUrl(reader.result as string); // Set the preview URL
+      };
+      reader.readAsDataURL(file); // Read the file as a data URL
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
+    // Prepare the user data payload
     const userPayload = {
       name,
       email,
@@ -43,33 +56,75 @@ export default function Signup() {
       business_description: isBusinessOwner ? businessDescription : null,
       is_registered: isBusinessOwner ? isRegistered : null,
     };
-
-    const { error } = await supabase.from('users').insert([userPayload]);
-
-    if (error) {
-      console.error('Signup error:', error);
-      setStatusMessage(`Error: ${error.message}`);
-    } else {
-      setStatusMessage('Signup successful! You can now log in at the login page.');
-      if (photo && isBusinessOwner) {
-        const { data, error } = await supabase.storage
-        .from('user-photos')  // Ensure 'user-photos' exists in Supabase
-        .upload(`business_owners/${email}_${photo.name}`, photo);
-                
-      if (error) {
-        console.error('Photo upload error:', error);
-        setStatusMessage(`Error uploading photo: ${error.message}`);
-      } else {
-        console.log('Upload data:', data);  // Log or process the upload response
-        setStatusMessage('Photo uploaded successfully!');
-      }
-      
-
-      }
-      resetFormFields();
+  
+    // Insert user data into the 'users' table
+    const { error: userError } = await supabase.from('users').insert([userPayload]);
+  
+    if (userError) {
+      console.error('Signup error:', userError);
+      setStatusMessage(`Error: ${userError.message}`);
+      return;
     }
+  
+    setStatusMessage('Signup successful! You can now log in at the login page.');
+  
+    // Upload photo if provided and the user is a business owner
+    if (photo && isBusinessOwner) {
+      try {
+        // Generate a unique filename for the photo
+        const photoPath = `user_photos/user_pic/${email}_${photo.name}`;
+        
+        // Upload the photo to Supabase storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('user-photos')
+          .upload(photoPath, photo);
+  
+        if (uploadError) {
+          console.error('Photo upload error:', uploadError);
+          setStatusMessage(`Error uploading photo: ${uploadError.message}`);
+          return;
+        }
+  
+        // Log the upload data to check if the file is uploaded successfully
+        console.log('Upload Data:', uploadData);
+  
+        // Get the public URL of the uploaded photo
+        const { data: { publicUrl } } = supabase
+          .storage
+          .from('user-photos')
+          .getPublicUrl(photoPath);  // Accessing publicUrl inside the 'data' object
+  
+        console.log('Public URL:', publicUrl);  // Log the URL to verify it's correct
+  
+        // Ensure publicUrl is not null or undefined before proceeding
+        if (!publicUrl) {
+          console.error('Error: No public URL returned');
+          setStatusMessage('Error retrieving the photo URL.');
+          return;
+        }
+  
+        // Update the user's photo URL in the database (in the 'photo' column)
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ photo: publicUrl }) // Update photo URL
+          .eq('email', email); // Ensure we're updating the correct user by email
+  
+        if (updateError) {
+          console.error('Error updating photo URL:', updateError);
+          setStatusMessage(`Error saving photo URL: ${updateError.message}`);
+        } else {
+          setStatusMessage('Photo uploaded and saved successfully!');
+        }
+  
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        setStatusMessage('Unexpected error occurred while uploading photo.');
+      }
+    }
+  
+    resetFormFields();
   };
-
+    
   const resetFormFields = () => {
     setName('');
     setEmail('');
@@ -85,6 +140,7 @@ export default function Signup() {
     setBusinessDescription('');
     setIsRegistered(false);
     setPhoto(null);
+    setPhotoPreviewUrl(null);  // Reset the preview
   };
 
   return (
@@ -223,11 +279,23 @@ export default function Signup() {
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.label}>Upload Photo:</label>
-                <input
-                  type="file"
-                  className={styles.inputField}
-                  onChange={(e) => setPhoto(e.target.files ? e.target.files[0] : null)}
-                />
+                <div className={styles.uploadContainer}>
+                  {/* Photo preview on the left */}
+                  {photoPreviewUrl && (
+                    <div className={styles.photoPreview}>
+                      <img
+                        src={photoPreviewUrl}
+                        alt="Photo Preview"
+                        className={styles.previewImage}
+                      />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    className={styles.inputField}
+                    onChange={handleFileChange}
+                  />
+                </div>
               </div>
             </>
           )}

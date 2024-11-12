@@ -7,6 +7,7 @@ import { supabase } from '../../lib/supabaseClient';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from './Contact.module.css';
+import Link from 'next/link';  // Import Link from next/link
 
 type User = {
   user_id: string;
@@ -138,6 +139,11 @@ export default function Contacts() {
         {filteredContacts.length === 0 && (
           <p className={styles.noContactsMessage}>No contacts found.</p>
         )}
+
+        {/* Button to navigate to the messages page */}
+        <Link href="/messages">
+          <button className={styles.messagesPageButton}>Go to Messages</button>
+        </Link>
       </div>
 
       {/* Message Modal */}
