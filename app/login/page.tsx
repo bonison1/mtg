@@ -5,8 +5,6 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Link from 'next/link';
 import styles from './Login.module.css';
 
@@ -49,7 +47,6 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-      <Header />
       <main className={styles.mainContent}>
         <h1>Login</h1>
         <input
@@ -82,7 +79,6 @@ export default function Login() {
           </Link>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

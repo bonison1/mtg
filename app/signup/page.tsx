@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import styles from './Signup.module.css';
 
 export default function Signup() {
@@ -145,7 +143,6 @@ export default function Signup() {
 
   return (
     <div>
-      <Header />
       <div className={styles.container}>
         <h1 className={styles.title}>Sign Up</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -306,7 +303,6 @@ export default function Signup() {
           {statusMessage && <p className={styles.statusMessage}>{statusMessage}</p>}
         </form>
       </div>
-      <Footer />
     </div>
   );
 }

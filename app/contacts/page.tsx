@@ -4,8 +4,6 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import styles from './Contact.module.css';
 import Link from 'next/link';  // Import Link from next/link
 
@@ -108,7 +106,6 @@ export default function Contacts() {
 
   return (
     <div>
-      <Header />
       <div className={styles.container}>
         <h1 className={styles.title}>My Contacts</h1>
 
@@ -167,7 +164,6 @@ export default function Contacts() {
           </div>
         </div>
       )}
-      <Footer />
     </div>
   );
 }

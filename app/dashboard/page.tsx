@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Image from 'next/image';
 import styles from './Dashboard.module.css';
 
@@ -152,7 +150,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Header />
       <div className={styles.container}>
         <h1 className={styles.title}>Dashboard</h1>
 
@@ -227,7 +224,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

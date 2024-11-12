@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';  // Initialize useRouter for navigation
 import { supabase } from '../../lib/supabaseClient';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import styles from './messages.module.css';
 
 type Message = {
@@ -112,7 +110,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Header />
       <div className={styles.container}>
         <h1 className={styles.title}>Dashboard</h1>
 
@@ -183,7 +180,6 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 }

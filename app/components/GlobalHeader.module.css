@@ -1,20 +1,13 @@
-/* GlobalHeader.module.css */
-
 /* Header Layout for Desktop and Larger Screens */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 1rem;
   height: 60px;
-  width: 100%;
-  box-sizing: border-box;
+  position: relative;
   border-bottom: 2px solid #e0e0e0;
-  background-color: white; /* Ensures header has a white background */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
+  background-color: white;
 }
 
 /* Logo Styles */
@@ -35,7 +28,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Button Styles for Desktop */
 .navButton {
   text-decoration: none;
   color: #333;
@@ -94,8 +86,9 @@
   width: 100%;
   padding: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 9999;
+  z-index: 9999; /* Ensures the menu appears in front of everything */
 }
+
 
 .nav.open .navButton,
 .nav.open .createTaskButton {
@@ -108,30 +101,20 @@
 /* Mobile Responsive Header Adjustments */
 @media (max-width: 768px) {
   .nav {
-    display: none;
+    display: none; /* Hide navigation by default on mobile */
   }
 
   .menuButton {
-    display: block;
+    display: block; /* Show the hamburger menu button on mobile */
   }
 
   .nav.open {
-    display: flex;
+    display: flex; /* Show navigation when menu is open */
   }
 
   .logoImage {
-    height: 40px;
+    height: 40px; /* Adjust logo size for mobile */
   }
-  /* GlobalHeader.module.css */
-.logoutButton {
-  background-color: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 20px; /* Adjust spacing as needed */
-}
-
 
   .navButton,
   .createTaskButton {
