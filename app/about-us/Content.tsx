@@ -46,7 +46,15 @@ export function MatengContent() {
           </p>
         </div>
       </div>
-      <Image src="/discover-page-img.jpg" alt="mateng at work" className={styles.heroImage} />
+
+      {/* Image Component with width and height */}
+      <Image 
+        src="/discover.jpg" 
+        alt="mateng at work" 
+        className={styles.heroImage} 
+        width={800}  // Set the width (adjust as needed)
+        height={600} // Set the height (adjust as needed)
+      />
 
       <div className={styles.journeySection}>
         <h2 className={styles.sectionTitle}>Our Journey</h2>

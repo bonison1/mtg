@@ -28,7 +28,7 @@ export default function DiscoverPage() {
       <Head>
         <title>Justmateng</title> {/* Set your custom tab name here */}
         <meta name="description" content="Your app description" />
-        <link rel="icon" href="/1.jpg" /> {/* Ensure the favicon is in the public folder */}
+        <link rel="icon" href="/logo.png" /> {/* Ensure the favicon is in the public folder */}
       </Head>
       <div className={styles.wrapper}>
         <div className={styles.discover}>

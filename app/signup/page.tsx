@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import styles from './Signup.module.css';
+import Image from 'next/image';
 
 export default function Signup() {
   const [name, setName] = useState('');
@@ -280,7 +281,7 @@ export default function Signup() {
                   {/* Photo preview on the left */}
                   {photoPreviewUrl && (
                     <div className={styles.photoPreview}>
-                      <img
+                      <Image
                         src={photoPreviewUrl}
                         alt="Photo Preview"
                         className={styles.previewImage}
