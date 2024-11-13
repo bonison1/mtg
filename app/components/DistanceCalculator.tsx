@@ -49,6 +49,7 @@ const DistanceCalculator = () => {
   const [routeCoordinates, setRouteCoordinates] = useState<Array<[number, number]>>([]);
   const [clickCount, setClickCount] = useState(0);
 
+  // Function to fetch suggestions for origin/destination
   const fetchSuggestions = async (input: string) => {
     try {
       const response = await fetch(`/api/autocomplete?input=${input}`);
@@ -57,13 +58,13 @@ const DistanceCalculator = () => {
         return;
       }
 
-      const data: SuggestionResponse = await response.json();
+      const data: SuggestionResponse = await response.json();  // Type the response
       const suggestions = data.predictions.map((prediction) => ({
         description: prediction.description,
         latitude: prediction.geometry.location.lat,
         longitude: prediction.geometry.location.lng,
       }));
-
+      
       setSuggestions(suggestions);
       setShowSuggestions(true);
     } catch (error) {
@@ -71,6 +72,7 @@ const DistanceCalculator = () => {
     }
   };
 
+  // Function to calculate distance between origin and destination
   const calculateDistance = async () => {
     setDistance("Calculating...");
     if (!originCoords || !destinationCoords) {
@@ -95,6 +97,7 @@ const DistanceCalculator = () => {
       const distanceInKm = (distanceInMeters / 1000).toFixed(2); // Convert and round to 2 decimals
       setDistance(`${distanceInKm} km`);
 
+      // Decode polyline for route display
       const routePolyline = data.rows[0].elements[0].polyline;
       const decodedPolyline = polyline.decode(routePolyline);
       setRouteCoordinates(decodedPolyline);
@@ -103,7 +106,6 @@ const DistanceCalculator = () => {
       setDistance("Error calculating distance");
     }
   };
-
   // Map click handler to capture origin/destination
   const MapClickHandler = () => {
     useMapEvents({
