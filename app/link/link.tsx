@@ -86,7 +86,7 @@ export default function Contacts() {
             )}
           </ul>
         ) : (
-          <p>No links found.</p>
+          <p>No links found as of now. Please contact to Mateng support. </p>
         )}
       </div>
     </div>

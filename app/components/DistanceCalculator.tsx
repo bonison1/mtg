@@ -1,11 +1,21 @@
-"use client";
+"use client"; // Ensure the component is marked as client-side
+
 import { useState } from 'react';
-import { MapContainer, TileLayer, Polyline, Marker, Popup, useMapEvents } from 'react-leaflet';
+import dynamic from 'next/dynamic';
 import { LeafletMouseEvent } from 'leaflet';
-import polyline from '@mapbox/polyline';  // Use the polyline library to decode the polyline data
+import polyline from '@mapbox/polyline';
 import 'leaflet/dist/leaflet.css';
 
-// Define the types for the suggestion response
+// Dynamically import other Leaflet components with proper typing
+const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), { ssr: false });
+const Polyline = dynamic(() => import('react-leaflet').then((mod) => mod.Polyline), { ssr: false });
+const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), { ssr: false });
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), { ssr: false });
+
+// No dynamic import needed for useMapEvents as it's a React hook
+import { useMapEvents } from 'react-leaflet';
+
 interface Location {
   lat: number;
   lng: number;
@@ -39,7 +49,6 @@ const DistanceCalculator = () => {
   const [routeCoordinates, setRouteCoordinates] = useState<Array<[number, number]>>([]);
   const [clickCount, setClickCount] = useState(0);
 
-  // Function to fetch suggestions for origin/destination
   const fetchSuggestions = async (input: string) => {
     try {
       const response = await fetch(`/api/autocomplete?input=${input}`);
@@ -48,13 +57,13 @@ const DistanceCalculator = () => {
         return;
       }
 
-      const data: SuggestionResponse = await response.json();  // Type the response
+      const data: SuggestionResponse = await response.json();
       const suggestions = data.predictions.map((prediction) => ({
         description: prediction.description,
         latitude: prediction.geometry.location.lat,
         longitude: prediction.geometry.location.lng,
       }));
-      
+
       setSuggestions(suggestions);
       setShowSuggestions(true);
     } catch (error) {
@@ -62,7 +71,6 @@ const DistanceCalculator = () => {
     }
   };
 
-  // Function to calculate distance between origin and destination
   const calculateDistance = async () => {
     setDistance("Calculating...");
     if (!originCoords || !destinationCoords) {
@@ -87,7 +95,6 @@ const DistanceCalculator = () => {
       const distanceInKm = (distanceInMeters / 1000).toFixed(2); // Convert and round to 2 decimals
       setDistance(`${distanceInKm} km`);
 
-      // Decode polyline for route display
       const routePolyline = data.rows[0].elements[0].polyline;
       const decodedPolyline = polyline.decode(routePolyline);
       setRouteCoordinates(decodedPolyline);
@@ -102,7 +109,7 @@ const DistanceCalculator = () => {
     useMapEvents({
       click(e: LeafletMouseEvent) {
         const selectedCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
-        
+
         if (clickCount === 0) {
           setOriginCoords(selectedCoords);
           setClickCount(1);
@@ -117,7 +124,6 @@ const DistanceCalculator = () => {
     return null;
   };
 
-  // Reverse geocode to get the name of the place
   const reverseGeocode = async (coords: { lat: number; lng: number }, setLocation: (name: string) => void) => {
     try {
       const response = await fetch(`/api/reverse-geocode?lat=${coords.lat}&lng=${coords.lng}`);

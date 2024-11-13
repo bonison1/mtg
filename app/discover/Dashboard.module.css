@@ -1,19 +1,24 @@
-/* Dashboard.module.css */
-
+/* General container styles */
 .container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Title styles */
 .title {
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
 }
 
+/* Search Bar styles */
 .searchInput {
   width: 100%;
+  max-width: 400px;
   padding: 10px;
   margin-bottom: 20px;
   font-size: 1rem;
@@ -21,6 +26,7 @@
   border-radius: 5px;
 }
 
+/* Business Owners Section */
 .businessOwnersPanel {
   margin-top: 20px;
 }
@@ -29,32 +35,35 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .businessOwnerBox {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 15px;
-  width: 220px;
+  width: 200px;
   text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.businessOwnerBox:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
 .businessPhoto {
   border-radius: 50%;
+  object-fit: cover;
   margin-bottom: 10px;
 }
 
-.inContactsButton,
-.addContactButton {
-  background-color: #007bff;
+.businessOwnerBox h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.businessOwnerBox p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.addContactButton,
+.removeContactButton {
+  background-color: #054b1c;
   color: white;
   border: none;
   border-radius: 5px;
@@ -65,16 +74,20 @@
   transition: background-color 0.3s ease;
 }
 
-.inContactsButton {
-  background-color: #6c757d;
-  cursor: not-allowed;
+.addContactButton:hover,
+.removeContactButton:hover {
+  background-color: #04651f;
 }
 
-.addContactButton:hover {
-  background-color: #0056b3;
+.removeContactButton {
+  background-color: #e54b1c;
 }
 
-/* Modal styling */
+.removeContactButton:hover {
+  background-color: #a73914;
+}
+
+/* Modal Styles */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -110,6 +123,7 @@
   color: #333;
 }
 
+/* Close Button in Modal */
 .closeButton {
   position: absolute;
   top: 10px;
@@ -118,4 +132,16 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+/* Dropdown Select Box */
+.categorySelect {
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  background-color: #fff;
+  color: #333;
 }

@@ -9,7 +9,7 @@ export default function Footer() {
       </div>
       <div className={styles['footer-right']}>
         <Link href="/about-us">About Us</Link>
-        <Link href="/team-login">Team Dashboard</Link>
+        <Link href="/terms">Terms and Conditions</Link>
         <Link href="/employee-login">Employee Dashboard</Link>
       </div>
     </footer>

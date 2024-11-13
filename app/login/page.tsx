@@ -1,5 +1,3 @@
-// app/login/page.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -30,6 +28,10 @@ export default function Login() {
         const user = users[0];
         sessionStorage.setItem('user', JSON.stringify(user));
         alert('Login successful!');
+
+        // Emit a custom event to notify Header about login
+        window.dispatchEvent(new Event('loginStatusChange'));
+
         router.push('/discover');
       } else {
         setErrorMessage('Invalid email or password');

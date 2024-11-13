@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -14,10 +14,22 @@ const Header: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const userJson = sessionStorage.getItem('user');
-    const employeeJson = sessionStorage.getItem('employee');
-    setIsLoggedIn(!!userJson);
-    setIsEmployeeLoggedIn(!!employeeJson);
+    const updateLoginStatus = () => {
+      const userJson = sessionStorage.getItem('user');
+      const employeeJson = sessionStorage.getItem('employee');
+      setIsLoggedIn(!!userJson);
+      setIsEmployeeLoggedIn(!!employeeJson);
+    };
+
+    // Initial check
+    updateLoginStatus();
+
+    // Listen for custom login status change event
+    window.addEventListener('loginStatusChange', updateLoginStatus);
+
+    return () => {
+      window.removeEventListener('loginStatusChange', updateLoginStatus);
+    };
   }, []);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -27,6 +39,10 @@ const Header: React.FC = () => {
     sessionStorage.removeItem('employee');
     setIsLoggedIn(false);
     setIsEmployeeLoggedIn(false);
+
+    // Emit the event
+    window.dispatchEvent(new Event('loginStatusChange'));
+
     router.push('/');
   };
 
@@ -47,7 +63,6 @@ const Header: React.FC = () => {
       {/* Navigation Menu */}
       <nav className={`${styles.nav} ${menuOpen ? styles.open : ''}`}>
         
-
         {/* Conditional Rendering for Logged In Users or Employees */}
         {isLoggedIn && !isEmployeeLoggedIn && (
           <>

@@ -25,7 +25,7 @@
   .loginButton {
     width: 100%;
     padding: 12px;
-    background-color: #0070f3;
+    background-color: #02592f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -44,7 +44,7 @@
   }
   
   .link {
-    color: #0070f3;
+    color: #02592f;
     text-decoration: underline;
     cursor: pointer;
   }
