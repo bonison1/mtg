@@ -25,11 +25,11 @@ export default function MessageDataPage() {
       }
 
       try {
-        // Fetch messages from Supabase where the email matches the logged-in user
+        // Fetch messages from Supabase where the sender_email matches the logged-in user's email
         const { data: fetchedMessages, error: fetchError } = await supabase
           .from('message_data')
           .select('*')
-          .eq('email', user.email);
+          .eq('sender_email', user.email);  // Changed 'email' to 'sender_email'
 
         if (fetchError) {
           throw new Error(fetchError.message);  // Explicitly use fetchError
@@ -53,41 +53,6 @@ export default function MessageDataPage() {
     fetchMessages();
   }, [router]);
 
-  // Handle status change
-  const handleStatusChange = async (id: number, status: string | undefined) => {
-    if (!status) return; // If the status is undefined or empty, do nothing
-
-    try {
-      // Update the status in Supabase
-      const { error } = await supabase
-        .from('message_data')
-        .update({ status })
-        .eq('id', id);
-
-      if (error) throw new Error(error.message);
-
-      // Update the status in the local state without refetching all data
-      setMessages((prevMessages) =>
-        prevMessages.map((message) =>
-          message.id === id ? { ...message, status } : message
-        )
-      );
-
-      // Filter the updated messages list
-      setFilteredMessages((prevFilteredMessages) =>
-        prevFilteredMessages.map((message) =>
-          message.id === id ? { ...message, status } : message
-        )
-      );
-
-      // Set success message
-      setSaveMessage('Status updated successfully!');
-      setTimeout(() => setSaveMessage(null), 3000); // Hide after 3 seconds
-    } catch (error) {
-      setError('Failed to update status');
-    }
-  };
-
   // Handle filter change
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value;
@@ -104,7 +69,6 @@ export default function MessageDataPage() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.messageTitle}>Your Orders</h2>
       
       <div className={styles.buttonGroup}>
       <button onClick={() => router.push('/sent_message')} className={styles.messagesButton}>
@@ -117,6 +81,7 @@ export default function MessageDataPage() {
       </div>
 
 
+      <h2 className={styles.messageTitle}>Your Orders</h2>
       {error && <p className={styles.error}>{error}</p>}
       
       {saveMessage && <p className={styles.statusMessage}>{saveMessage}</p>}
@@ -149,9 +114,8 @@ export default function MessageDataPage() {
               <th>Mobile Number</th>
               <th>Message</th>
               <th>Created At</th>
-              <th>Email</th>
+              <th>Email</th>  {/* Display the sender's email */}
               <th>Status</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -163,7 +127,7 @@ export default function MessageDataPage() {
                 <td>{message.mobile_number}</td>
                 <td>{message.message}</td>
                 <td>{new Date(message.created_at).toLocaleString()}</td>
-                <td>{message.email}</td>
+                <td>{message.sender_email}</td> {/* Changed 'email' to 'sender_email' */}
                 <td
                   className={
                     message.status === 'Pending'
@@ -178,20 +142,6 @@ export default function MessageDataPage() {
                   }
                 >
                   {message.status || 'Pending'}
-                </td>
-                <td>
-                  <select
-                    value={message.status || 'Pending'}
-                    onChange={(e) => handleStatusChange(message.id, e.target.value)}
-                    className={styles.statusDropdown}
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="In-Progress">In-Progress</option>
-                    <option value="Out for Delivery">Out for Delivery</option>
-                    <option value="Sorry can't able to give order at this moment">
-                      Sorry can&apos;t give order at this moment
-                    </option>
-                  </select>
                 </td>
               </tr>
             ))}

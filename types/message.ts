@@ -8,4 +8,5 @@ export interface Message {
   created_at: string;  // Or `Date`, depending on how you want to handle it
   email: string;
   status?: string; // Add the status property (optional)
+  sender_email: string;
 }
