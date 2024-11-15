@@ -75,6 +75,9 @@ const Header: React.FC = () => {
             <Link href="/link" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               View my Orders
             </Link>
+            <Link href="/search_order" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Search Order
+            </Link>
             <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Delivery Rates
             </Link>
@@ -109,6 +112,9 @@ const Header: React.FC = () => {
             </Link>
             <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Delivery Rates
+            </Link>
+            <Link href="/search_order" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Search Order
             </Link>
             <Link href="/login" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Log In

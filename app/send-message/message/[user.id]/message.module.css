@@ -1,0 +1,30 @@
+/* message.module.css */
+
+.container {
+    padding: 20px;
+  }
+  
+  .messageList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .messageItem {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .messageItem h3 {
+    margin: 0;
+  }
+  
+  .messageItem p {
+    margin: 5px 0;
+  }
+  
+  .timestamp {
+    margin-top: 10px;
+    color: #888;
+  }
+  

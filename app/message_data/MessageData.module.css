@@ -1,0 +1,148 @@
+/* Container for the entire page */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Styling the title */
+.messageTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Error message styling */
+.error {
+  color: red;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* Table styling */
+.messagesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.messagesTable th, .messagesTable td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.messagesTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* Status dropdown for select options */
+.statusDropdown {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.statusDropdown:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Button styling for save action */
+.button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button:hover {
+  background-color: #218838;
+}
+
+/* Table row styling */
+.messagesTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.messagesTable tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+/* Status colors for different states */
+.statusPending {
+  color: #ffc107; /* Yellow for pending */
+  background-color: rgba(255, 193, 7, 0.2);
+}
+
+.statusInProgress {
+  color: #007bff; /* Blue for in-progress */
+  background-color: rgba(0, 123, 255, 0.2);
+}
+
+.statusOutForDelivery {
+  color: #28a745; /* Green for out-for-delivery */
+  background-color: rgba(40, 167, 69, 0.2);
+}
+
+.statusNotAvailable {
+  color: #dc3545; /* Red for not available */
+  background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Cell styling for date formatting */
+.messagesTable td {
+  word-wrap: break-word;
+}
+
+/* Filter container */
+.filterContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Filter select */
+.filterSelect {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Status message after save */
+.statusMessage {
+  color: green;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+/* Make the page more responsive */
+@media (max-width: 768px) {
+  .messagesTable {
+    font-size: 14px;
+  }
+
+  .messagesTable th, .messagesTable td {
+    padding: 8px;
+  }
+
+  .button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}

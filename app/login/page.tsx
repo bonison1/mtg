@@ -18,7 +18,7 @@ export default function Login() {
     try {
       const { data: users, error } = await supabase
         .from('users')
-        .select('user_id, name, email')
+        .select('user_id, name, email, address, phone')
         .eq('email', email)
         .eq('password', password);
 
@@ -26,7 +26,10 @@ export default function Login() {
 
       if (users && users.length > 0) {
         const user = users[0];
+
+        // Store the entire user object, including address and phone
         sessionStorage.setItem('user', JSON.stringify(user));
+
         alert('Login successful!');
 
         // Emit a custom event to notify Header about login

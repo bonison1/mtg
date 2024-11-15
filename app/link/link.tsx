@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import styles from './Contacts.module.css';
 
 type UserLinks = {
   user_id: string;
@@ -10,8 +11,18 @@ type UserLinks = {
   link3: string | null;
 };
 
+type MessageData = {
+  order_id: string;
+  message: string;
+  created_at: string;
+};
+
 export default function Contacts() {
   const [userLinks, setUserLinks] = useState<UserLinks | null>(null);
+  const [orderId, setOrderId] = useState<string>('');
+  const [messageData, setMessageData] = useState<MessageData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetchUserLinks();
@@ -27,7 +38,7 @@ export default function Contacts() {
       .from('user_links')
       .select('user_id, link1, link2, link3')
       .eq('user_id', user.user_id)
-      .single();  // Use .single() since we're assuming a 1-to-1 relationship between user and their links
+      .single();
 
     if (error) {
       console.error('Error fetching user links:', error.message);
@@ -35,58 +46,131 @@ export default function Contacts() {
     }
 
     if (data) {
-      setUserLinks(data);  // Store the user links in state
+      setUserLinks(data);
     }
   };
 
   const handleRedirect = (link: string | null) => {
     if (link) {
-      window.location.href = link;  // Redirect to the link if it exists
+      window.location.href = link;
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!orderId) {
+      setError('Order ID is required.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setMessageData(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('message_data')
+        .select('*')
+        .eq('order_id', orderId)
+        .single();
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessageData(data as MessageData);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.searchContainer}>
+        <h1 className={styles.header}>Search Order</h1>
+
+        <div>
+          <input
+            className={styles.searchInput}
+            type="text"
+            value={orderId}
+            onChange={(e) => setOrderId(e.target.value)}
+            placeholder="Enter Order ID"
+          />
+          <button
+            className={styles.searchButton}
+            onClick={handleSearch}
+            disabled={loading}
+          >
+            {loading ? 'Searching...' : 'Search'}
+          </button>
+        </div>
+
+        {error && <div className={styles.errorMessage}>{error}</div>}
+
+        {messageData && (
+          <div className={styles.messageDetails}>
+            <h2>Message Details</h2>
+            <p><strong>Order ID:</strong> {messageData.order_id}</p>
+            <p><strong>Message:</strong> {messageData.message}</p>
+            <p><strong>Created At:</strong> {new Date(messageData.created_at).toLocaleString()}</p>
+          </div>
+        )}
+      </div>
+
       <div>
-        <h1>My Links</h1>
-        {/* Links List */}
+        <h1 className={styles.header}>My Links</h1>
+
         {userLinks ? (
-          <ul>
-            {/* Specific Button for link1 */}
+          <ul className={styles.linksList}>
             {userLinks.link1 && (
-              <li key="link1">
+              <li className={styles.linkItem} key="link1">
                 <button
+                  className={styles.linkButton}
                   onClick={() => handleRedirect(userLinks.link1)}
                 >
-                  Go to Order View
+                  View Mateng Delivery Orders
                 </button>
               </li>
             )}
-            
-            {/* Button for link2 */}
             {userLinks.link2 && (
-              <li key="link2">
+              <li className={styles.linkItem} key="link2">
                 <button
+                  className={styles.linkButton}
                   onClick={() => handleRedirect(userLinks.link2)}
                 >
-                  Go to Profile Upload
+                  View our Instagram Page
                 </button>
               </li>
             )}
-
-            {/* Button for link3 */}
             {userLinks.link3 && (
-              <li key="link3">
+              <li className={styles.linkItem} key="link3">
                 <button
+                  className={styles.linkButton}
                   onClick={() => handleRedirect(userLinks.link3)}
                 >
                   Go to Bank Account Upload
                 </button>
               </li>
             )}
+            <li className={styles.linkItem} key="view-orders">
+              <button
+                className={styles.linkButton}
+                onClick={() => handleRedirect('/view-orders')}
+              >
+                View my Orders
+              </button>
+            </li>
+            <li className={styles.linkItem} key="search-order">
+              <button
+                className={styles.linkButton}
+                onClick={() => handleRedirect('/search-order')}
+              >
+                Search Order
+              </button>
+            </li>
           </ul>
         ) : (
-          <p>No links found as of now. Please contact to Mateng support. </p>
+          <p className={styles.noLinksMessage}>No links found as of now. Please contact Mateng support.</p>
         )}
       </div>
     </div>

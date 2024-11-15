@@ -1,3 +1,5 @@
+// app/context/AuthContext.tsx
+
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -16,30 +18,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isEmployeeLoggedIn, setIsEmployeeLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if 'user' or 'employee' exists in localStorage
-    const userJson = localStorage.getItem('user');
-    const employeeJson = localStorage.getItem('employee');
-    
-    // Update state based on the stored values
+    const userJson = sessionStorage.getItem('user');
+    const employeeJson = sessionStorage.getItem('employee');
     setIsLoggedIn(!!userJson);
     setIsEmployeeLoggedIn(!!employeeJson);
   }, []);
 
   const login = (userType: 'user' | 'employee') => {
-    if (userType === 'user') {
-      localStorage.setItem('user', 'true');  // Set in localStorage
-      setIsLoggedIn(true);
-    }
-    if (userType === 'employee') {
-      localStorage.setItem('employee', 'true'); // Set in localStorage
-      setIsEmployeeLoggedIn(true);
-    }
+    if (userType === 'user') setIsLoggedIn(true);
+    if (userType === 'employee') setIsEmployeeLoggedIn(true);
   };
 
   const logout = () => {
-    // Remove login state from localStorage when logging out
-    localStorage.removeItem('user');
-    localStorage.removeItem('employee');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('employee');
     setIsLoggedIn(false);
     setIsEmployeeLoggedIn(false);
   };

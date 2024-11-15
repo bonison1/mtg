@@ -1,11 +1,10 @@
-// app/contacts/page.tsx
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import { useRouter } from 'next/navigation'; // Using useRouter from next/navigation
+import Link from 'next/link';
 import styles from './Contact.module.css';
-import Link from 'next/link';  // Import Link from next/link
 
 type User = {
   user_id: string;
@@ -17,13 +16,20 @@ export default function Contacts() {
   const [contacts, setContacts] = useState<User[]>([]);
   const [search, setSearch] = useState('');
   const [filteredContacts, setFilteredContacts] = useState<User[]>([]);
+  const [userLink, setUserLink] = useState<string | undefined>(undefined);
+  const [isLinkCreated, setIsLinkCreated] = useState<boolean>(false);
+  const [linkStatus, setLinkStatus] = useState<string | null>(null);
   const [selectedContact, setSelectedContact] = useState<User | null>(null);
   const [message, setMessage] = useState('');
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [sendStatus, setSendStatus] = useState<string | null>(null);
+  const [activeEmail, setActiveEmail] = useState<string | null>(null); // Track the clicked email
+
+  const router = useRouter(); // Using useRouter from next/navigation
 
   useEffect(() => {
     fetchContacts();
+    checkUserLink(); // Check if the user already has a link
   }, []);
 
   useEffect(() => {
@@ -59,6 +65,53 @@ export default function Contacts() {
     if (data) {
       const contactsList = data.flatMap((entry) => entry.contact_user_id) as User[];
       setContacts(contactsList);
+    }
+  };
+
+  const checkUserLink = async () => {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const { data, error } = await supabase
+        .from('user_links') // Your table name
+        .select('link2') // Query for link2 column
+        .eq('user_id', user.user_id) // Filter by the user_id
+        .single(); // Expecting a single result
+
+      if (error) {
+        console.error('Error checking user link:', error.message);
+        return;
+      }
+
+      if (data && data.link2) {
+        setUserLink(data.link2); // Set the link if it exists
+        setIsLinkCreated(true); // Indicate that the link has been created
+      }
+    }
+  };
+
+  const generateUserLink = async () => {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const uniqueLink = `/send-message/${user.user_id}`;  // Format the user-specific link (this is the dynamic part)
+
+      // Update the `link2` column with the generated link
+      const { error } = await supabase
+        .from('user_links')
+        .upsert([  // Insert or update the link
+          { user_id: user.user_id, link2: uniqueLink },
+        ]);
+
+      if (error) {
+        console.error('Error generating user link:', error.message);
+        setLinkStatus("There was an error generating your link.");
+        return;
+      }
+
+      setUserLink(uniqueLink);
+      setIsLinkCreated(true);
+      setLinkStatus("Link created successfully!");
     }
   };
 
@@ -104,6 +157,11 @@ export default function Contacts() {
     }
   };
 
+  const handleEmailClick = (email: string) => {
+    // Update activeEmail when an email is clicked
+    setActiveEmail(email === activeEmail ? null : email);
+  };
+
   return (
     <div>
       <div className={styles.container}>
@@ -122,13 +180,35 @@ export default function Contacts() {
         <ul className={styles.contactsList}>
           {filteredContacts.map((contact, index) => (
             <li key={`${contact.user_id}-${contact.email}-${index}`} className={styles.contactItem}>
-              {contact.name} ({contact.email})
-              <button
-                onClick={() => openMessageModal(contact)}
-                className={styles.messageButton}
-              >
-                Send Message
-              </button>
+              <div>
+                {contact.name}
+
+                {/* Only show email as clickable link */}
+                <span
+                  onClick={() => handleEmailClick(contact.email)}
+                  className={styles.emailLink}
+                >
+                  {contact.email}
+                </span>
+
+                {/* Show the buttons only if the email is clicked */}
+                {activeEmail === contact.email && (
+                  <div>
+                    <Link href={`/send-message/message/${contact.user_id}`} passHref>
+                      <button className={styles.viewMessagesButton}>
+                        View Messages
+                      </button>
+                    </Link>
+
+                    <button
+                      onClick={() => openMessageModal(contact)}
+                      className={styles.messageButton}
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                )}
+              </div>
             </li>
           ))}
         </ul>
@@ -137,10 +217,43 @@ export default function Contacts() {
           <p className={styles.noContactsMessage}>No contacts found.</p>
         )}
 
-        {/* Button to navigate to the messages page */}
-        <Link href="/messages">
-          <button className={styles.messagesPageButton}>Go to Messages</button>
-        </Link>
+        {/* Button to generate user link */}
+        {!isLinkCreated ? (
+          <button onClick={generateUserLink} className={styles.generateLinkButton}>
+            Create My Unique Link
+          </button>
+        ) : (
+          <div className={styles.userLinkContainer}>
+            <h2>Your Unique Link:</h2>
+            <p><strong>Share this link to allow others to send you messages:</strong></p>
+            {userLink && (
+              <Link href={userLink} passHref className={styles.userLink}>
+                {userLink}
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* Display the link status */}
+        {linkStatus && (
+          <p className={styles.linkStatusMessage}>
+            {linkStatus}
+          </p>
+        )}
+      </div>
+
+      {/* Additional Buttons */}
+      <div className={styles.buttonGroup}>
+        <button onClick={() => router.push('/discover')} className={styles.discoverButton}>
+          Discover
+        </button>
+
+        <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
+          Messages
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
+          View my Orders
+        </button>
       </div>
 
       {/* Message Modal */}
