@@ -69,19 +69,28 @@ export default function MessageDataPage() {
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.messageTitle}>Order by you to others</h2>
       
       <div className={styles.buttonGroup}>
-      <button onClick={() => router.push('/sent_message')} className={styles.messagesButton}>
-          Sent Orders
-      </button>
-      <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
-        Customer Orders
-      </button>
+        <button onClick={() => router.push('/discover')} className={styles.messagesButton}>
+            Discover
+          </button>
 
+          <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
+            Messages
+          </button>
+          <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+            View Delivery Orders
+          </button>
+        <button onClick={() => router.push('/sent_message')} className={styles.CustomerButton}>
+            Sent Orders
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.SentButton}>
+          Customer Orders
+        </button>
       </div>
 
-
-      <h2 className={styles.messageTitle}>Your Orders</h2>
+      
       {error && <p className={styles.error}>{error}</p>}
       
       {saveMessage && <p className={styles.statusMessage}>{saveMessage}</p>}
@@ -101,6 +110,7 @@ export default function MessageDataPage() {
           </option>
         </select>
       </div>
+        
 
       {filteredMessages.length === 0 ? (
         <p>No messages found for your selected status.</p>

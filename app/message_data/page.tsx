@@ -104,17 +104,30 @@ export default function MessageDataPage() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.messageTitle}>Your Orders</h2>
+
+
+      <h2 className={styles.messageTitle}>Order from Others</h2>
       
       <div className={styles.buttonGroup}>
-      <button onClick={() => router.push('/sent_message')} className={styles.messagesButton}>
+      <button onClick={() => router.push('/discover')} className={styles.messagesButton}>
+          Discover
+        </button>
+
+        <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
+          Messages
+        </button>
+        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+        View Delivery Orders
+        </button>
+      <button onClick={() => router.push('/sent_message')} className={styles.CustomerButton}>
           Sent Orders
       </button>
-      <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
+      <button onClick={() => router.push('/message_data')} className={styles.SentButton}>
         Customer Orders
       </button>
 
       </div>
+      
 
 
       {error && <p className={styles.error}>{error}</p>}

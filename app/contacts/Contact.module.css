@@ -48,7 +48,7 @@
 .messagesButton {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #044d0b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -58,7 +58,7 @@
 
 .discoverButton:hover,
 .messagesButton:hover {
-  background-color: #0056b3;
+  background-color: #044d0b;
 }
 
 /* Search bar */
@@ -114,7 +114,7 @@
   margin: 20px auto;
   padding: 12px 24px;
   font-size: 1.1rem;
-  background-color: #007bff;
+  background-color: #055106;
   color: white;
   border: none;
   border-radius: 5px;
@@ -123,7 +123,7 @@
 }
 
 .generateLinkButton:hover {
-  background-color: #0056b3;
+  background-color: #055106;
 }
 
 /* User link container */
@@ -133,7 +133,7 @@
 }
 
 .userLink {
-  color: #007bff;
+  color: #055106;
   text-decoration: none;
 }
 
@@ -201,7 +201,7 @@
 }
 
 .sendMessageButton:hover {
-  background-color: #218838;
+  background-color: #055106;
 }
 
 .cancelButton {
@@ -241,6 +241,7 @@
   .generateLinkButton {
     font-size: 1rem;
     width: 100%;
+    background-color: #055106;
   }
 
   .searchInput {
@@ -306,6 +307,8 @@
   .generateLinkButton {
     font-size: 1.1rem;
     width: 100%;
+    background-color: #055106;
+
   }
 
   .contactsList {

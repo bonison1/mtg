@@ -122,16 +122,7 @@ export default function Contacts() {
 
         {userLinks ? (
           <ul className={styles.linksList}>
-            {userLinks.link1 && (
-              <li className={styles.linkItem} key="link1">
-                <button
-                  className={styles.linkButton}
-                  onClick={() => handleRedirect(userLinks.link1)}
-                >
-                  View Mateng Delivery Orders
-                </button>
-              </li>
-            )}
+            
             {userLinks.link2 && (
               <li className={styles.linkItem} key="link2">
                 <button
@@ -152,10 +143,20 @@ export default function Contacts() {
                 </button>
               </li>
             )}
+            {userLinks.link1 && (
+              <li className={styles.linkItem} key="link1">
+                <button
+                  className={styles.linkButton}
+                  onClick={() => handleRedirect(userLinks.link1)}
+                >
+                  View Mateng Delivery Orders
+                </button>
+              </li>
+            )}
             <li className={styles.linkItem} key="view-orders">
               <button
                 className={styles.linkButton}
-                onClick={() => handleRedirect('/view-orders')}
+                onClick={() => handleRedirect('/message_data')}
               >
                 View my Orders
               </button>

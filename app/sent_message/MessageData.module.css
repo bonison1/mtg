@@ -149,7 +149,27 @@
 .messagesButton {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #025f20;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.SentButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #025f20;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.CustomerButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #636363;
   color: white;
   border: none;
   border-radius: 5px;

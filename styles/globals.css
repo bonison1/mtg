@@ -53,6 +53,7 @@ body {
 .main-content {
   flex: 1; /* Main content takes up the remaining space */
   padding: 20px;
+  flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -28,7 +28,7 @@
   padding: 12px 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #06612d;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -38,7 +38,7 @@
 }
 
 .linkButton:hover {
-  background-color: #0056b3;
+  background-color: #06612d;
 }
 
 .noLinksMessage {
@@ -70,14 +70,14 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #8d8d8d;
 }
 
 .searchButton {
   padding: 10px 18px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #28a745;
+  background-color: #818181;
   color: #fff;
   border: none;
   border-radius: 5px;

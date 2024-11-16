@@ -47,6 +47,7 @@ const SearchOrderPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      
       <h1>Search Order</h1>
 
       <div>
