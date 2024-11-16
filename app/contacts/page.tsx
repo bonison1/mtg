@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useRouter } from 'next/navigation'; // Using useRouter from next/navigation
 import Link from 'next/link';
+import QRCode from 'react-qr-code'; // Import QRCode component for generating QR code
 import styles from './Contact.module.css';
 
 type User = {
@@ -231,6 +232,10 @@ export default function Contacts() {
                 {userLink}
               </Link>
             )}
+            {/* Generate QR Code for the User Link */}
+            <div className={styles.qrCodeContainer}>
+              {userLink && <QRCode value={userLink} size={256} />}
+            </div>
           </div>
         )}
 
