@@ -28,7 +28,7 @@ export default function Signup() {
   const router = useRouter();
 
   // Sample categories for the dropdown
-  const availableCategories = ['Technology', 'Health', 'Education', 'Finance', 'Retail', 'Hospitality'];
+  const availableCategories = ['Clothing', 'Bakery', 'Flower Shop', 'Finance', 'Retail', 'Hospitality','Education','Cafe', 'Hangout Spot', 'Service Sector', 'Others'];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;

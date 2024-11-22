@@ -230,10 +230,16 @@ export default function Contacts() {
         <button onClick={() => router.push('/discover')} className={styles.discoverButton}>
           Discover
         </button>
+
         <button onClick={() => router.push('/inventory')} className={styles.messagesButton}>
           Add Inventory
         </button>
 
+
+        <button onClick={() => router.push('')} className={styles.messagesButton}>
+          Accounts
+        </button>
+ 218b9cf1bc467608b0c6c9424e51a5ba166c2832
         <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
           Messages
         </button>
