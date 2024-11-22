@@ -218,29 +218,6 @@
   background-color: #aaa;
 }
 
-/* Mobile View: Delivery Rates and View Delivery Orders buttons */
-.mobileButtons {
-  display: none; /* Default: hidden */
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.mobileButtons button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.mobileButtons button:hover {
-  background-color: #218838;
-}
-
 /* Media Queries for Mobile View (below 768px) */
 @media (max-width: 768px) {
   .container {
@@ -256,7 +233,7 @@
   .buttonGroup {
     flex-direction: column;
     gap: 10px;
-    align-items: center;
+    align-items: center; /* Center the buttons vertically */
   }
 
   .discoverButton,
@@ -264,6 +241,7 @@
   .generateLinkButton {
     font-size: 1rem;
     width: 100%;
+    background-color: #055106;
   }
 
   .searchInput {
@@ -306,16 +284,6 @@
   .userLinkContainer {
     padding: 10px;
   }
-
-  /* Show mobile buttons */
-  .mobileButtons {
-    display: block; /* Show on mobile */
-  }
-
-  .mobileButtons button {
-    font-size: 1rem;
-    width: 100%; /* Full width */
-  }
 }
 
 /* Media Queries for Tablet View (768px to 1024px) */
@@ -331,7 +299,7 @@
   .buttonGroup {
     flex-direction: column;
     gap: 15px;
-    align-items: center;
+    align-items: center; /* Center the buttons vertically */
   }
 
   .discoverButton,
@@ -339,6 +307,8 @@
   .generateLinkButton {
     font-size: 1.1rem;
     width: 100%;
+    background-color: #055106;
+
   }
 
   .contactsList {
@@ -371,35 +341,5 @@
   .cancelButton {
     width: 100%;
     margin-top: 10px;
-  }
-}
-/* Mobile view: Delivery Rates and View my Delivery Orders buttons */
-.mobileButtons {
-  display: none;
-}
-
-/* Show the buttons only on mobile devices */
-@media (max-width: 768px) {
-  .mobileButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .deliveryButton {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #055106;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    align-items: center; /* Align buttons vertically in the container */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .deliveryButton:hover {
-    background-color: #044d0b;
   }
 }

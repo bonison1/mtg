@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Using useRouter from next/navigation
 import Link from 'next/link';
-import QRCode from 'react-qr-code';
+import QRCode from 'react-qr-code'; // Import QRCode component for generating QR code
 import styles from './Contact.module.css';
 
 type User = {
@@ -26,11 +26,11 @@ export default function Contacts() {
   const [sendStatus, setSendStatus] = useState<string | null>(null);
   const [activeEmail, setActiveEmail] = useState<string | null>(null); // Track the clicked email
 
-  const router = useRouter();
+  const router = useRouter(); // Using useRouter from next/navigation
 
   useEffect(() => {
     fetchContacts();
-    checkUserLink();
+    checkUserLink(); // Check if the user already has a link
   }, []);
 
   useEffect(() => {
@@ -46,6 +46,7 @@ export default function Contacts() {
     if (!userJson) return;
 
     const user = JSON.parse(userJson);
+
     const { data, error } = await supabase
       .from('user_contacts')
       .select(`
@@ -73,19 +74,19 @@ export default function Contacts() {
     if (userJson) {
       const user = JSON.parse(userJson);
       const { data, error } = await supabase
-        .from('user_links')
-        .select('link2')
-        .eq('user_id', user.user_id)
-        .single();
+        .from('user_links') // Your table name
+        .select('link2') // Query for link2 column
+        .eq('user_id', user.user_id) // Filter by the user_id
+        .single(); // Expecting a single result
 
       if (error) {
         console.error('Error checking user link:', error.message);
         return;
       }
 
-      if (data?.link2) {
-        setUserLink(data.link2);
-        setIsLinkCreated(true);
+      if (data && data.link2) {
+        setUserLink(data.link2); // Set the link if it exists
+        setIsLinkCreated(true); // Indicate that the link has been created
       }
     }
   };
@@ -94,11 +95,14 @@ export default function Contacts() {
     const userJson = sessionStorage.getItem('user');
     if (userJson) {
       const user = JSON.parse(userJson);
-      const uniqueLink = `/send-message/${user.user_id}`;
+      const uniqueLink = `/send-message/${user.user_id}`;  // Format the user-specific link (this is the dynamic part)
 
+      // Update the `link2` column with the generated link
       const { error } = await supabase
         .from('user_links')
-        .upsert([{ user_id: user.user_id, link2: uniqueLink }]);
+        .upsert([  // Insert or update the link
+          { user_id: user.user_id, link2: uniqueLink },
+        ]);
 
       if (error) {
         console.error('Error generating user link:', error.message);
@@ -115,7 +119,7 @@ export default function Contacts() {
   const openMessageModal = (contact: User) => {
     setSelectedContact(contact);
     setIsMessageModalOpen(true);
-    setSendStatus(null);
+    setSendStatus(null); // Reset send status
   };
 
   const closeMessageModal = () => {
@@ -135,8 +139,8 @@ export default function Contacts() {
           sender_id: user.user_id,
           receiver_id: selectedContact.user_id,
           message_content: message,
-          status: 'sent',
-          read: false,
+          status: 'sent',  // default status
+          read: false,  // marks as unread initially
           timestamp: new Date(),
         },
       ]);
@@ -146,7 +150,7 @@ export default function Contacts() {
         setSendStatus('Failed to send message.');
       } else {
         setSendStatus('Message sent successfully!');
-        closeMessageModal();
+        closeMessageModal(); // Close the modal after sending the message
       }
     } catch (error) {
       console.error('Unexpected error sending message:', error);
@@ -155,6 +159,7 @@ export default function Contacts() {
   };
 
   const handleEmailClick = (email: string) => {
+    // Update activeEmail when an email is clicked
     setActiveEmail(email === activeEmail ? null : email);
   };
 
@@ -174,10 +179,12 @@ export default function Contacts() {
 
         {/* Contacts List */}
         <ul className={styles.contactsList}>
-          {filteredContacts.map((contact) => (
-            <li key={contact.user_id} className={styles.contactItem}>
+          {filteredContacts.map((contact, index) => (
+            <li key={`${contact.user_id}-${contact.email}-${index}`} className={styles.contactItem}>
               <div>
                 {contact.name}
+
+                {/* Only show email as clickable link */}
                 <span
                   onClick={() => handleEmailClick(contact.email)}
                   className={styles.emailLink}
@@ -185,13 +192,19 @@ export default function Contacts() {
                   {contact.email}
                 </span>
 
+                {/* Show the buttons only if the email is clicked */}
                 {activeEmail === contact.email && (
                   <div>
                     <Link href={`/send-message/message/${contact.user_id}`} passHref>
-                      <button className={styles.viewMessagesButton}>View Messages</button>
+                      <button className={styles.viewMessagesButton}>
+                        View Messages
+                      </button>
                     </Link>
 
-                    <button onClick={() => openMessageModal(contact)} className={styles.messageButton}>
+                    <button
+                      onClick={() => openMessageModal(contact)}
+                      className={styles.messageButton}
+                    >
                       Send Message
                     </button>
                   </div>
@@ -201,8 +214,11 @@ export default function Contacts() {
           ))}
         </ul>
 
-        {filteredContacts.length === 0 && <p className={styles.noContactsMessage}>No contacts found.</p>}
+        {filteredContacts.length === 0 && (
+          <p className={styles.noContactsMessage}>No contacts found.</p>
+        )}
 
+        {/* Button to generate user link */}
         {!isLinkCreated ? (
           <button onClick={generateUserLink} className={styles.generateLinkButton}>
             Create My Unique Link
@@ -210,28 +226,31 @@ export default function Contacts() {
         ) : (
           <div className={styles.userLinkContainer}>
             <h2>Your Unique Link:</h2>
-            <p><strong>Share this link to allow others to send you Order:</strong></p>
+            <p><strong>Share this link to allow others to send you messages:</strong></p>
             {userLink && (
               <Link href={userLink} passHref className={styles.userLink}>
                 {userLink}
               </Link>
             )}
+            {/* Generate QR Code for the User Link */}
             <div className={styles.qrCodeContainer}>
               {userLink && <QRCode value={userLink} size={256} />}
             </div>
           </div>
         )}
 
-        {linkStatus && <p className={styles.linkStatusMessage}>{linkStatus}</p>}
+        {/* Display the link status */}
+        {linkStatus && (
+          <p className={styles.linkStatusMessage}>
+            {linkStatus}
+          </p>
+        )}
       </div>
 
-      {/* Buttons for Desktop and Tablet View */}
+      {/* Additional Buttons */}
       <div className={styles.buttonGroup}>
         <button onClick={() => router.push('/discover')} className={styles.discoverButton}>
           Discover
-        </button>
-        <button onClick={() => router.push('/inventory')} className={styles.messagesButton}>
-          Add Inventory
         </button>
 
         <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
@@ -239,16 +258,6 @@ export default function Contacts() {
         </button>
         <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
           View my Orders
-        </button>
-      </div>
-
-      {/* Mobile Specific Buttons */}
-      <div className={styles.mobileButtons}>
-        <button onClick={() => router.push('/delivery-rates')} className={styles.deliveryButton}>
-          Delivery Rates
-        </button>
-        <button onClick={() => router.push('/delivery-orders')} className={styles.deliveryButton}>
-          View my Delivery Orders
         </button>
       </div>
 
@@ -263,9 +272,13 @@ export default function Contacts() {
               placeholder="Type your message here"
               className={styles.messageTextarea}
             />
-            <button onClick={sendMessage} className={styles.sendMessageButton}>Send</button>
+            <button onClick={sendMessage} className={styles.sendMessageButton}>
+              Send
+            </button>
             {sendStatus && <p>{sendStatus}</p>}
-            <button onClick={closeMessageModal} className={styles.cancelButton}>Cancel</button>
+            <button onClick={closeMessageModal} className={styles.cancelButton}>
+              Cancel
+            </button>
           </div>
         </div>
       )}

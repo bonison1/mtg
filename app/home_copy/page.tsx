@@ -1,3 +1,4 @@
+// Importing necessary libraries and hooks
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link"; // Import Link from next/link
@@ -24,12 +25,13 @@ export default function DiscoverPage() {
   }, []);
 
   return (
-    <><div></div>
+    <>
       <Head>
         <title>Justmateng</title> {/* Set your custom tab name here */}
         <meta name="description" content="Your app description" />
         <link rel="icon" href="/logo.png" /> {/* Ensure the favicon is in the public folder */}
       </Head>
+
       <div className={styles.wrapper}>
         <div className={styles.discover}>
           <div className={styles.landingView}>
@@ -58,12 +60,11 @@ export default function DiscoverPage() {
             <div className={styles.buttonContainer}>
               <Link href="/discover" className={styles.button}>Discover Now</Link>
               <Link href="https://wa.link/5b9wah" className={styles.button}>Get Delivery Service</Link>
-              <Link href="/delivery-rates" className={styles.button}>Delivery Rates</Link>
+              {/* New Chat Now button only visible on mobile */}
+              <Link href="https://wa.link/5b9wah" className={styles.chatButton}>Chat Now</Link>
             </div>
-
           </div>
         </div>
-
       </div>
     </>
   );

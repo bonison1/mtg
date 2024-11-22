@@ -146,34 +146,31 @@
     margin: 10px 0;
   }
 
+  /* Chat Now button: initially hidden on desktop */
+  .chatButton {
+    padding: 10px 20px;
+    background-color: #25D366; /* WhatsApp green */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    display: none; /* Hide by default */
+    margin-top: 20px;
+  }
+
+  /* Mobile-specific display for Chat Now button */
+  .chatButtonMobile {
+    display: inline-block; /* Show the button on mobile */
+    width: 100%; /* Ensure button is touch-friendly */
+    max-width: 250px;
+  }
+
+  .chatButton:hover {
+    background-color: #128C7E; /* WhatsApp hover color */
+  }
+
   /* Optional footer positioning */
   .footer {
     margin-top: auto; /* Push footer to the bottom of the page */
-  }
-}
-
-/* Show the buttons only on mobile devices */
-@media (max-width: 768px) {
-  .mobileButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .deliveryButton {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #055106;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    align-items: center; /* Align buttons vertically in the container */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .deliveryButton:hover {
-    background-color: #044d0b;
   }
 }
