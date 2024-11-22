@@ -222,7 +222,7 @@ export default function Dashboard() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Business Dashboard</h1>
+      <h1 className={styles.title}>Discover Businesses</h1>
 
       <input
         type="text"
