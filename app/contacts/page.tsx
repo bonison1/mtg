@@ -234,12 +234,6 @@ export default function Contacts() {
         <button onClick={() => router.push('/inventory')} className={styles.messagesButton}>
           Add Inventory
         </button>
-
-
-        <button onClick={() => router.push('')} className={styles.messagesButton}>
-          Accounts
-        </button>
- 218b9cf1bc467608b0c6c9424e51a5ba166c2832
         <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
           Messages
         </button>
@@ -248,7 +242,7 @@ export default function Contacts() {
         </button>
       </div>
 
-      {/* Mobile Specific Buttons */}
+      {/* Mobile Specific Buttons 
       <div className={styles.mobileButtons}>
         <button onClick={() => router.push('/delivery-rates')} className={styles.deliveryButton}>
           Delivery Rates
@@ -256,7 +250,7 @@ export default function Contacts() {
         <button onClick={() => router.push('/delivery-orders')} className={styles.deliveryButton}>
           View my Delivery Orders
         </button>
-      </div>
+      </div> */}
 
       {/* Message Modal */}
       {isMessageModalOpen && selectedContact && (
