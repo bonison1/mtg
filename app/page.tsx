@@ -19,7 +19,7 @@ export default function Home() {
         </div>
       </div>
       <footer className="footer">
-        <p>© 2024 Your Company</p>
+        <p>© 2024 Mateng</p>
       </footer>
     </div>
   );
