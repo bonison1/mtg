@@ -104,7 +104,7 @@ const Header: React.FC = () => {
         {/* For non-logged in users */}
         {!isLoggedIn && !isEmployeeLoggedIn && (
           <>
-            <Link href="/home" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+            <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Home
             </Link>
             <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
