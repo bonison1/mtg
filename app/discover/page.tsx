@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './Dashboard.module.css';
 
 type User = {
@@ -18,25 +19,42 @@ type User = {
   photo?: string;
   categories?: string[];
   ratings?: number; // For average rating
+  link2?: string; // New field for link2
 };
 
-function BusinessModal({ business, onClose, onRate }: { business: User; onClose: () => void, onRate: (rating: number) => void }) {
+function BusinessModal({
+  business,
+  onClose,
+  onRate,
+}: {
+  business: User;
+  onClose: () => void;
+  onRate: (rating: number) => void;
+}) {
   const [rating, setRating] = useState(0);
 
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
 
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={styles.modalOverlay}>
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
-        <button onClick={onClose} className={styles.closeButton}>X</button>
+        <button onClick={onClose} className={styles.closeButton}>
+          X
+        </button>
         <h2>{business.business_name || 'Business Details'}</h2>
-        <Image 
-          src={business.photo || '/2.jpg'} 
-          alt="Business" 
-          width={150} 
-          height={150} 
+        <Image
+          src={business.photo || '/2.jpg'}
+          alt="Business"
+          width={150}
+          height={150}
         />
         <p><strong>Owner:</strong> {business.name}</p>
         <p><strong>Email:</strong> {business.email}</p>
@@ -45,6 +63,11 @@ function BusinessModal({ business, onClose, onRate }: { business: User; onClose:
         <p><strong>Product/Service:</strong> {business.product_service || 'N/A'}</p>
         <p><strong>Phone:</strong> {business.phone || 'N/A'}</p>
         <p><strong>Website:</strong> {business.website || 'N/A'}</p>
+
+        {/* Display the link2 if available */}
+        {business.link2 && (
+          <p><strong>Additional Link:</strong> <a href={business.link2} target="_blank" rel="noopener noreferrer">{business.link2}</a></p>
+        )}
 
         <div>
           <h4>Rate this Business</h4>
@@ -56,7 +79,7 @@ function BusinessModal({ business, onClose, onRate }: { business: User; onClose:
                 style={{
                   cursor: 'pointer',
                   color: star <= rating ? 'gold' : 'gray',
-                  fontSize: '1.5rem'
+                  fontSize: '1.5rem',
                 }}
               >
                 ★
@@ -83,6 +106,7 @@ export default function Dashboard() {
   const [categories, setCategories] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -92,7 +116,26 @@ export default function Dashboard() {
           console.error('Error fetching users:', error.message);
         } else {
           const owners = data?.filter(user => user.is_registered) || [];
-          setBusinessOwners(owners);
+
+          // Fetch user_links and add the link2 to the business data
+          const usersWithLinks = await Promise.all(
+            owners.map(async (user) => {
+              const { data: userLinksData, error: linksError } = await supabase
+                .from('user_links')
+                .select('link2')
+                .eq('user_id', user.user_id);
+
+              if (linksError) {
+                console.error('Error fetching user links:', linksError.message);
+              } else {
+                user.link2 = userLinksData?.[0]?.link2 || ''; // Add link2 to the user object
+              }
+
+              return user;
+            })
+          );
+
+          setBusinessOwners(usersWithLinks);
         }
       } catch (error) {
         console.error('Unexpected error fetching users:', error);
@@ -143,10 +186,10 @@ export default function Dashboard() {
       }
     };
 
-    fetchAllUsers(); 
-    fetchCategories(); 
-    fetchContacts(); 
-  }, []); 
+    fetchAllUsers();
+    fetchCategories();
+    fetchContacts();
+  }, []);
 
   const addToContacts = async (user: User) => {
     const userJson = sessionStorage.getItem('user');
@@ -222,6 +265,22 @@ export default function Dashboard() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.buttonGroup}>
+        <button onClick={() => router.push('/discover')} className={styles.messagesCont}>
+          Discover
+        </button>
+        <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
+          My Contacts
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
+          View my Orders
+        </button>
+        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+          Mateng Delivery History
+        </button>
+      </div>
+      
+
       <h1 className={styles.title}>Discover Businesses</h1>
 
       <input
@@ -278,10 +337,10 @@ export default function Dashboard() {
       </div>
 
       {selectedBusiness && (
-        <BusinessModal 
-          business={selectedBusiness} 
-          onClose={() => setSelectedBusiness(null)} 
-          onRate={(rating) => giveRating(rating, selectedBusiness)} 
+        <BusinessModal
+          business={selectedBusiness}
+          onClose={() => setSelectedBusiness(null)}
+          onRate={(rating) => giveRating(rating, selectedBusiness)}
         />
       )}
     </div>

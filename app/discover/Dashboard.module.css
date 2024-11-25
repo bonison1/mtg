@@ -1,90 +1,137 @@
-/* General container styles */
+/* Global styles */
 .container {
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Title styles */
 .title {
   font-size: 2rem;
-  margin-bottom: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
   text-align: center;
 }
 
-/* Search Bar styles */
-.searchInput {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
 
-/* Business Owners Section */
+.messagesButton {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #044d0b; /* Text color */
+  border: 2px solid #044d0b; /* Border color and width */
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  width: auto;
+  font-weight: bold;
+}
+
+.messagesButton:hover {
+  background-color: #0e4a00;
+  color: #ffffff; /* Text color */
+}
+
+.messagesCont {
+  padding: 10px 20px;
+  background-color: #044d0b;
+  color: #ffffff; /* Text color */
+  border: 2px solid #044d0b; /* Border color and width */
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  width: auto;
+  font-weight: bold;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.categorySelect {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Business Grid and Panel */
 .businessOwnersPanel {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .businessOwnersGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
-  justify-content: center;
 }
 
 .businessOwnerBox {
-  width: 200px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
   text-align: center;
-  border: 1px solid #ddd;
-  padding: 10px;
+}
+
+.businessOwnerBox:hover {
+  transform: translateY(-5px);
 }
 
 .businessPhoto {
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
+  width: 100px;
+  height: 100px;
 }
 
 .businessOwnerBox h3 {
   font-size: 1.2rem;
-  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .businessOwnerBox p {
   font-size: 1rem;
-  color: #555;
+  margin: 5px 0;
+  color: #666;
 }
 
-.addContactButton,
-.removeContactButton {
-  background-color: #054b1c;
+.inContactsButton,
+.addContactButton {
+  background-color: #28a745;
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
-  padding: 8px 12px;
-  font-size: 0.9rem;
   cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
 }
 
-.addContactButton:hover,
-.removeContactButton:hover {
-  background-color: #04651f;
+.inContactsButton {
+  background-color: #dc3545;
 }
 
-.removeContactButton {
-  background-color: #e54b1c;
-}
-
-.removeContactButton:hover {
-  background-color: #a73914;
+.inContactsButton:hover,
+.addContactButton:hover {
+  opacity: 0.9;
 }
 
 /* Modal Styles */
@@ -94,54 +141,136 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
 .modalContent {
-  background: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 10px;
-  width: 90%;
   max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  position: relative;
+  width: 100%;
   text-align: center;
 }
 
-.modalContent h2 {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-}
-
-.modalContent p {
-  margin: 8px 0;
-  font-size: 1rem;
-  color: #333;
-}
-
-/* Close Button in Modal */
 .closeButton {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: transparent;
+  background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
+  color: #333;
 }
 
-/* Dropdown Select Box */
-.categorySelect {
-  padding: 10px;
-  margin-bottom: 20px;
+.h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.button {
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  background-color: #fff;
-  color: #333;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Rating Stars */
+.span {
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Mobile & small screen devices (default styles) */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .searchInput,
+  .categorySelect {
+    width: 100%;
+  }
+
+  .businessOwnerBox {
+    padding: 15px;
+  }
+
+  .businessPhoto {
+    width: 80px;
+    height: 80px;
+  }
+
+  .businessOwnerBox h3 {
+    font-size: 1rem;
+  }
+
+  .businessOwnerBox p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet and larger devices (600px and up) */
+@media (min-width: 600px) {
+  .searchInput,
+  .categorySelect {
+    width: 300px;
+  }
+
+  .businessOwnerBox {
+    padding: 20px;
+  }
+
+  .businessPhoto {
+    width: 100px;
+    height: 100px;
+  }
+
+  .businessOwnerBox h3 {
+    font-size: 1.2rem;
+  }
+
+  .businessOwnerBox p {
+    font-size: 1rem;
+  }
+}
+
+/* Desktop and larger devices (1024px and up) */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1100px;
+  }
+
+  .businessOwnersGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .businessOwnerBox {
+    padding: 30px;
+  }
+
+  .searchInput,
+  .categorySelect {
+    width: 350px;
+  }
+
+  .buttonGroup {
+    justify-content: space-between;
+  }
 }

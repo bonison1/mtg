@@ -72,9 +72,6 @@ const Header: React.FC = () => {
             <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Contacts
             </Link>
-            <Link href="/link" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-              View my Orders
-            </Link>
             <Link href="/search_order" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Search Order
             </Link>

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -13,6 +15,7 @@ export default function MessageDataPage() {
   const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const router = useRouter();
 
   useEffect(() => {
@@ -65,53 +68,91 @@ export default function MessageDataPage() {
     }
   };
 
+  // Handle dropdown selection change
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+    setSelectedOption(selected);
+
+    if (selected === 'Sent Orders') {
+      router.push('/sent_message');
+    } else if (selected === 'Customer Orders') {
+      router.push('/message_data');
+    } else if (selected === 'Discover') {
+      router.push('/discover');
+    } else if (selected === 'Messages') {
+      router.push('/messages');
+    } else if (selected === 'View Delivery Orders') {
+      router.push('/link');
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.messageTitle}>Order by you to others</h2>
-      
+      {/* Buttons for Desktop and Tablet View */}
       <div className={styles.buttonGroup}>
         <button onClick={() => router.push('/discover')} className={styles.messagesButton}>
-            Discover
-          </button>
-
-          <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
-            Messages
-          </button>
-          <button onClick={() => router.push('/link')} className={styles.messagesButton}>
-            View Delivery Orders
-          </button>
-        <button onClick={() => router.push('/sent_message')} className={styles.CustomerButton}>
-            Sent Orders
+          Discover
         </button>
-        <button onClick={() => router.push('/message_data')} className={styles.SentButton}>
-          Customer Orders
+        <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
+          My Contacts
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.messagesCont}>
+          View my Orders
+        </button>
+        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+          Mateng Delivery History
         </button>
       </div>
+      
+      {/* Create Order Button */}
+      <div className={styles.createOrderButtonContainer}>
+        <button onClick={() => router.push('/create_new_orders')} className={styles.createOrderButton}>Create an Order</button>
+      </div>
 
-      
+      <h2 className={styles.messageTitle}>Order by you to others</h2>
+
+      {/* Dropdown Wrapper */}
+      <div className={styles.dropdownWrapper}>
+        {/* Left Dropdown: Order Type */}
+        <div className={styles.dropdownContainerLeft}>
+          <label className={styles.dropdownLabel} htmlFor="orderType">Select Order Type</label>
+          <select
+            id="orderType"
+            className={styles.dropdownSelect}
+            value={selectedOption}
+            onChange={handleDropdownChange}
+          >
+            <option value="Sent Orders">Sent Orders</option>
+            <option value="Customer Orders">Customer Orders</option>
+          </select>
+        </div>
+
+        {/* Right Dropdown: Status Filter */}
+        <div className={styles.dropdownContainerRight}>
+          <label className={styles.filterLabel} htmlFor="statusFilter">Select Status</label>
+          <select
+            id="statusFilter"
+            className={styles.filterSelect}
+            value={filterStatus}
+            onChange={handleFilterChange}
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="In-Progress">In-Progress</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Sorry can&apos;t give order at this moment">
+              Sorry can't give order at this moment
+            </option>
+          </select>
+        </div>
+      </div>
+
       {error && <p className={styles.error}>{error}</p>}
-      
       {saveMessage && <p className={styles.statusMessage}>{saveMessage}</p>}
 
-      <div className={styles.filterContainer}>
-        <select
-          className={styles.filterSelect}
-          value={filterStatus}
-          onChange={handleFilterChange}
-        >
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="In-Progress">In-Progress</option>
-          <option value="Out for Delivery">Out for Delivery</option>
-          <option value="Sorry can't able to give order at this moment">
-            Sorry can&apos;t give order at this moment
-          </option>
-        </select>
-      </div>
-        
-
+      {/* Message Table */}
       {filteredMessages.length === 0 ? (
         <p>No messages found for your selected status.</p>
       ) : (
@@ -124,7 +165,7 @@ export default function MessageDataPage() {
               <th>Mobile Number</th>
               <th>Message</th>
               <th>Created At</th>
-              <th>Email</th>  {/* Display the sender's email */}
+              <th>Email</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -137,7 +178,7 @@ export default function MessageDataPage() {
                 <td>{message.mobile_number}</td>
                 <td>{message.message}</td>
                 <td>{new Date(message.created_at).toLocaleString()}</td>
-                <td>{message.sender_email}</td> {/* Changed 'email' to 'sender_email' */}
+                <td>{message.sender_email}</td>
                 <td
                   className={
                     message.status === 'Pending'

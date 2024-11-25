@@ -111,6 +111,21 @@ export default function Dashboard() {
   return (
     <div>
       <div className={styles.container}>
+              {/* Buttons for Desktop and Tablet View */}
+        <div className={styles.buttonGroup}>
+        <button onClick={() => router.push('/discover')} className={styles.messagesButton}>
+          Discover
+        </button>
+        <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
+          My Contacts
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
+          View my Orders
+        </button>
+        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+          Mateng Delivery History
+        </button>
+      </div>
         <h1 className={styles.title}>Dashboard</h1>
 
         {/* Sent Messages Section */}

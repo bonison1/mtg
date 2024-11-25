@@ -58,19 +58,7 @@
   width: auto;
   font-weight: bold;
 }
-.messagesCont {
-  padding: 10px 20px;
-  background-color: #044d0b;
-  color: #ffffff; /* Text color */
-  border: 2px solid #044d0b; /* Border color and width */
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  width: auto;
-  font-weight: bold;
-}
+
 
 .discoverButton:hover,
 .messagesButton:hover {
@@ -245,7 +233,7 @@
 .mobileButtons button {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #044d0b;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;

@@ -94,24 +94,24 @@ export default function Contacts() {
     const userJson = sessionStorage.getItem('user');
     if (userJson) {
       const user = JSON.parse(userJson);
-      const uniqueLink = `/send-message/${user.user_id}`;
-
+      const uniqueLink = `mateng.co.in/send-message/${user.user_id}`; // Prepend 'mateng.co.in/future/' to the user ID
+  
       const { error } = await supabase
         .from('user_links')
         .upsert([{ user_id: user.user_id, link2: uniqueLink }]);
-
+  
       if (error) {
         console.error('Error generating user link:', error.message);
         setLinkStatus("There was an error generating your link.");
         return;
       }
-
+  
       setUserLink(uniqueLink);
       setIsLinkCreated(true);
       setLinkStatus("Link created successfully!");
     }
   };
-
+  
   const openMessageModal = (contact: User) => {
     setSelectedContact(contact);
     setIsMessageModalOpen(true);
@@ -161,6 +161,21 @@ export default function Contacts() {
   return (
     <div>
       <div className={styles.container}>
+        {/* Buttons for Desktop and Tablet View */}
+        <div className={styles.buttonGroup}>
+        <button onClick={() => router.push('/discover')} className={styles.messagesButton}>
+          Discover
+        </button>
+        <button onClick={() => router.push('/contacts')} className={styles.messagesCont}>
+          My Contacts
+        </button>
+        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
+          View my Orders
+        </button>
+        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
+          Mateng Delivery History
+        </button>
+      </div>
         <h1 className={styles.title}>My Contacts</h1>
 
         {/* Search Field for Contacts */}
@@ -225,22 +240,7 @@ export default function Contacts() {
         {linkStatus && <p className={styles.linkStatusMessage}>{linkStatus}</p>}
       </div>
 
-      {/* Buttons for Desktop and Tablet View */}
-      <div className={styles.buttonGroup}>
-        <button onClick={() => router.push('/discover')} className={styles.discoverButton}>
-          Discover
-        </button>
-
-        <button onClick={() => router.push('/inventory')} className={styles.messagesButton}>
-          Add Inventory
-        </button>
-        <button onClick={() => router.push('/messages')} className={styles.messagesButton}>
-          Messages
-        </button>
-        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
-          View my Orders
-        </button>
-      </div>
+      
 
       {/* Mobile Specific Buttons 
       <div className={styles.mobileButtons}>

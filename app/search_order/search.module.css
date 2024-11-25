@@ -1,139 +1,3 @@
-/* General container and layout */
-.container {
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* Section headers */
-.header {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Styling for the links list (in column layout) */
-.linksList {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column; /* Arrange buttons vertically */
-  gap: 12px; /* Space between buttons */
-}
-
-.linkButton {
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #06612d;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  width: 100%; /* Make the button stretch full width */
-  text-align: center;
-}
-
-.linkButton:hover {
-  background-color: #06612d;
-}
-
-.noLinksMessage {
-  color: #ff0000;
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
-
-/* Styling for the search container */
-.searchContainer {
-  padding: 25px;
-  background-color: #f4f7f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px; /* Adds space between search and buttons */
-}
-
-.searchInput {
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-  max-width: 350px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  display: block;
-  transition: border-color 0.2s ease;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: #8d8d8d;
-}
-
-.searchButton {
-  padding: 10px 18px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #818181;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 120px;
-  display: inline-block;
-  transition: background-color 0.3s ease;
-}
-
-.searchButton:disabled {
-  background-color: #d6d6d6;
-  cursor: not-allowed;
-}
-
-.searchButton:hover:not(:disabled) {
-  background-color: #218838;
-}
-
-/* Error message styling */
-.errorMessage {
-  color: #e74c3c;
-  margin-top: 15px;
-  font-size: 1rem;
-}
-
-/* Styling for the message details section */
-.messageDetails {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #e9f7f7;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.messageDetails h2 {
-  font-size: 1.6rem;
-  color: #333;
-}
-
-.messageDetails p {
-  font-size: 1rem;
-  margin: 8px 0;
-}
-
-.messageDetails strong {
-  font-weight: bold;
-}
-
-/* Utility classes for spacing */
-.mt-20 {
-  margin-top: 20px;
-}
-
-.mb-20 {
-  margin-bottom: 20px;
-}
 /* Dashboard Layout */
 .container {
   padding: 20px;
@@ -389,39 +253,23 @@ flex-wrap: wrap;
 
 /* Make headers look like buttons */
 .messagesButton {
-  padding: 10px 20px;
-  background-color: #ffffff;
-  color: #044d0b; /* Text color */
-  border: 2px solid #044d0b; /* Border color and width */
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  width: auto;
-  font-weight: bold;
+padding: 10px 20px;
+background-color: #044d0b;
+color: white;
+border: none;
+cursor: pointer;
+font-size: 16px;
+border-radius: 5px;
+text-align: center;
+display: inline-block;
+width: auto;
+font-weight: bold;
 }
 
 .messagesButton:hover {
-  background-color: #0e4a00;
-  color: #ffffff; /* Text color */
+background-color: #044d0b;
 }
 
-
-
-.messagesCont {
-  padding: 10px 20px;
-  background-color: #044d0b;
-  color: #ffffff; /* Text color */
-  border: 2px solid #044d0b; /* Border color and width */
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  width: auto;
-  font-weight: bold;
-}
 /* Create Order Button */
 .createOrderButtonContainer {
 margin-top: 20px;
