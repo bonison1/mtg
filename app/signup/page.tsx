@@ -23,12 +23,13 @@ export default function Signup() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>(''); // Single category selection
+  const [otherCategory, setOtherCategory] = useState(''); // New state for the custom category input
 
   const router = useRouter();
 
   // Sample categories for the dropdown
-  const availableCategories = ['Clothing', 'Bakery', 'Flower Shop', 'Finance', 'Retail', 'Hospitality','Education','Cafe', 'Hangout Spot', 'Service Sector', 'Others'];
+  const availableCategories = ['Select One', 'Clothing', 'Bakery', 'Flower Shop', 'Finance', 'Retail', 'Hospitality', 'Education', 'Cafe', 'Hangout Spot', 'Service Sector', 'Others'];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -42,6 +43,9 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // If the "Others" category is selected, add the custom category to the payload
+    const selectedCategory = category === 'Others' && otherCategory.trim() ? otherCategory : category;
 
     // Check if the email is already registered
     const { data: existingUser, error: emailCheckError } = await supabase
@@ -74,7 +78,7 @@ export default function Signup() {
       business_experience: isBusinessOwner ? businessExperience : null,
       business_description: isBusinessOwner ? businessDescription : null,
       is_registered: isBusinessOwner ? isRegistered : null,
-      categories,
+      categories: selectedCategory ? [selectedCategory] : [], // Store only one category
     };
 
     // Insert user data into the 'users' table
@@ -161,7 +165,18 @@ export default function Signup() {
     setIsRegistered(false);
     setPhoto(null);
     setPhotoPreviewUrl(null);
-    setCategories([]);
+    setCategory('');
+    setOtherCategory(''); // Reset custom category field
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = e.target.value;
+    setCategory(selectedCategory);
+
+    // If "Others" is selected, allow the user to input a custom category
+    if (selectedCategory === 'Others') {
+      setOtherCategory('');
+    }
   };
 
   return (
@@ -224,16 +239,17 @@ export default function Signup() {
 
         {/* Business Info Fields */}
         <div className={styles.formGroup}>
-          <label className={styles.label}>Are you a business owner?</label>
           <input
             type="checkbox"
             checked={isBusinessOwner}
             onChange={(e) => setIsBusinessOwner(e.target.checked)}
           />
+          <label className={styles.label}>Are you a business owner?</label>
         </div>
 
         {isBusinessOwner && (
           <>
+            {/* Business details form */}
             <div className={styles.formGroup}>
               <label className={styles.label}>Business Name:</label>
               <input
@@ -297,9 +313,8 @@ export default function Signup() {
             <div className={styles.formGroup}>
               <label className={styles.label}>Categories:</label>
               <select
-                multiple
-                value={categories}
-                onChange={(e) => setCategories(Array.from(e.target.selectedOptions, option => option.value))}
+                value={category}
+                onChange={handleCategoryChange}
                 className={styles.inputField}
               >
                 {availableCategories.map((category) => (
@@ -310,41 +325,55 @@ export default function Signup() {
               </select>
             </div>
 
-            <div className={styles.formGroup}>
-              <div className="div1">
-                <label className={styles.label}>Upload Photo:</label>
+            {category === 'Others' && (
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Enter Custom Category:</label>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
+                  type="text"
+                  className={styles.inputField}
+                  value={otherCategory}
+                  onChange={(e) => setOtherCategory(e.target.value)}
+                  placeholder="Enter your category"
                 />
-                {photoPreviewUrl && (
-                  <Image
-                    src={photoPreviewUrl}
-                    alt="Preview"
-                    width={200}
-                    height={200}
-                    className={styles.previewImg}
-                  />
-                )}
               </div>
-            </div>
+            )}
+
+            {/* Business Photo Upload */}
             <div className={styles.formGroup}>
-              <div className="div2">
-                <label className={styles.label1}>Tick if you agree to make it discoverable your business by any users?:</label>
+              <label className={styles.label}>Upload your Business Profile Photo:</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {photoPreviewUrl && (
+                <Image
+                  src={photoPreviewUrl}
+                  alt="Preview"
+                  width={200}
+                  height={200}
+                  className={styles.previewImg}
+                />
+              )}
+            </div>
+
+            {/* Make Business Discoverable */}
+            <div className={styles.formGroup}>
+              <div>
                 <input
                   type="checkbox"
                   checked={isRegistered}
                   onChange={(e) => setIsRegistered(e.target.checked)}
                 />
+                <label className={styles.label1}>
+                  Make your business discoverable by users?
+                </label>
               </div>
             </div>
           </>
         )}
 
-        <button type="submit" className={styles.submitButton}>
-          Sign Up
-        </button>
+        <button type="submit" className={styles.submitButton}>Sign Up</button>
 
         {statusMessage && <p className={styles.statusMessage}>{statusMessage}</p>}
       </form>

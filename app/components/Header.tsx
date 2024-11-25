@@ -67,7 +67,7 @@ const Header: React.FC = () => {
         {isLoggedIn && !isEmployeeLoggedIn && (
           <>
             <Link href="/discover" className={styles.navButton} onClick={() => setMenuOpen(false)}>
-              Home
+              Discover
             </Link>
             <Link href="/contacts" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Contacts
@@ -77,6 +77,9 @@ const Header: React.FC = () => {
             </Link>
             <Link href="/delivery-rates" className={styles.navButton} onClick={() => setMenuOpen(false)}>
               Delivery Rates
+            </Link>
+            <Link href="/profile" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+              Profile
             </Link>
             <button onClick={handleLogout} className={styles.logoutButton}>
               Log Out

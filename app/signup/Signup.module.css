@@ -61,9 +61,13 @@
 }
 
 /* Checkbox & Radio buttons */
-.formGroup input[type="checkbox"] {
+/* Checkbox & Radio buttons */
+.formGroup input[type="checkbox"],
+.formGroup input[type="radio"] {
+  transform: scale(1.5); /* Adjust the number to make it bigger or smaller */
   margin-right: 10px;
 }
+
 
 .formGroup input[type="radio"] {
   margin-right: 10px;
