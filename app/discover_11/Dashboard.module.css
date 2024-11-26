@@ -1,0 +1,142 @@
+/* Container for the whole page */
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Styling for the Button Group */
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* Style for each individual button */
+.iconButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px; /* Square shape */
+  height: 60px; /* Square shape */
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.iconButton:hover {
+  transform: scale(1.05);
+}
+
+/* Image inside button */
+.iconButton img {
+  border-radius: 4px;
+}
+
+/* Text below the button image */
+.buttonText {
+  margin-top: 5px;
+  font-size: 12px; /* Small text for mobile */
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Input and Select Styles */
+.searchInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.categorySelect {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Grid layout for business owners */
+.businessOwnersPanel {
+  margin-bottom: 20px;
+}
+
+.businessOwnersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.businessOwnerBox {
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.businessOwnerBox:hover {
+  transform: scale(1.05);
+}
+
+.businessPhoto {
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+  width: 80%;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .iconButton {
+    width: 50px; /* Smaller size for mobile */
+    height: 50px; /* Smaller size for mobile */
+  }
+
+  .buttonText {
+    font-size: 10px; /* Make text even smaller on mobile */
+    margin-top: 3px;
+  }
+}

@@ -51,14 +51,14 @@ function BusinessModal({
         </button>
         <h2>{business.business_name || 'Business Details'}</h2>
         <Image
-          src={business.photo || '/2.jpg'}
+          src={business.photo || '/default-business.jpg'}
           alt="Business"
           width={150}
           height={150}
         />
         <p><strong>Owner:</strong> {business.name}</p>
         <p><strong>Email:</strong> {business.email}</p>
-        <p><strong>Address:</strong> {business.business_address || 'N/A'}</p>
+        <p><strong>Business Address:</strong> {business.business_address || 'N/A'}</p>
         <p><strong>Categories:</strong> {business.categories?.length ? business.categories.join(', ') : 'N/A'}</p>
         <p><strong>Product/Service:</strong> {business.product_service || 'N/A'}</p>
         <p><strong>Phone:</strong> {business.phone || 'N/A'}</p>
@@ -265,21 +265,27 @@ export default function Dashboard() {
 
   return (
     <div className={styles.container}>
+
+      
       <div className={styles.buttonGroup}>
-        <button onClick={() => router.push('/discover')} className={styles.messagesCont}>
-          Discover
+        <button onClick={() => router.push('/discover')} className={styles.iconButton}>
+          <Image src="/1.jpg" alt="Discover" width={40} height={40} />
+          <span className={styles.buttonText}>Discover</span>
         </button>
-        <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
-          My Contacts
+        <button onClick={() => router.push('/contacts')} className={styles.iconButton}>
+          <Image src="/2.jpg" alt="My Contacts" width={40} height={40} />
+          <span className={styles.buttonText}>My Contacts</span>
         </button>
-        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
-          View my Orders
+        <button onClick={() => router.push('/message_data')} className={styles.iconButton}>
+          <Image src="/3.jpg" alt="View my Orders" width={40} height={40} />
+          <span className={styles.buttonText}>My Orders</span>
         </button>
-        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
-          Mateng Delivery History
+        <button onClick={() => router.push('/link')} className={styles.iconButton}>
+          <Image src="/4.jpg" alt="Delivery History" width={40} height={40} />
+          <span className={styles.buttonText}>History</span>
         </button>
       </div>
-      
+
 
       <h1 className={styles.title}>Discover Businesses</h1>
 
@@ -307,14 +313,17 @@ export default function Dashboard() {
           {filteredBusinessOwners.map((business, index) => (
             <div key={index} className={styles.businessOwnerBox} onClick={() => setSelectedBusiness(business)}>
               <Image
-                src={business.photo || '/2.jpg'}
+                src={business.photo || '/default-business.jpg'}
                 alt="Business"
                 width={100}
                 height={100}
                 className={styles.businessPhoto}
               />
               <h3>{business.business_name}</h3>
-              <p>{business.categories?.join(', ')}</p>
+              <p>{business.product_service}</p>
+              <p>{business.business_address}</p>
+              <p>{business.phone}</p>
+
               <p>{business.ratings ? `${business.ratings} ★` : 'No ratings yet'}</p>
               {contacts.some((contact) => contact.user_id === business.user_id) ? (
                 <button
@@ -331,6 +340,7 @@ export default function Dashboard() {
                   Add to Contacts
                 </button>
               )}
+
             </div>
           ))}
         </div>

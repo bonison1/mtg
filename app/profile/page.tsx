@@ -161,9 +161,11 @@ export default function ProfilePage() {
       <div className={styles.profileInfo}>
         <div className={styles.profilePhotoContainer}>
           <Image
-            src={userData?.photo || '/default-profile.png'}
+            src={userData?.photo || '/default-profile.png'} // Fallback to a default image
             alt="Profile Photo"
             className={styles.profilePhoto}
+            width={150}  // Adding width
+            height={150} // Adding height
           />
           <input
             type="file"

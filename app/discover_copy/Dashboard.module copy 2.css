@@ -1,0 +1,197 @@
+/* General Styles */
+.body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden; /* Prevent scrolling on the main container */
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.messagesCont,
+.messagesButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.messagesCont:hover,
+.messagesButton:hover {
+  background-color: #0056b3;
+}
+
+/* Fixed layout for the page (no scrolling on the main content) */
+body.modal-open {
+  overflow: hidden; /* Prevent page scroll when modal is open */
+}
+
+.container {
+  overflow: hidden;
+}
+
+/* Header and filters section */
+.searchInput {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.categorySelect {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.businessOwnersPanel {
+  width: 100%;
+  max-width: 1200px; /* Optional, set the width of the frame */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping of business cards */
+  padding: 10px 0;
+  margin-top: 20px;
+  position: relative; /* To contain the scrolling area */
+}
+
+.businessOwnersGrid {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.businessOwnerBox {
+  flex: 0 0 auto; /* Prevent stretching */
+  width: 200px; /* Fixed width for each business card */
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 0;
+}
+
+.businessOwnerBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.businessPhoto {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.businessOwnerBox h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.businessOwnerBox p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.addContactButton,
+.inContactsButton {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addContactButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.addContactButton:hover {
+  background-color: #218838;
+}
+
+.inContactsButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.inContactsButton:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  /* Button group adjustments for mobile */
+  .buttonGroup {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Horizontal scroll for business cards only */
+  .businessOwnersPanel {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .businessOwnersGrid {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  .businessOwnerBox {
+    flex: 0 0 auto;
+    width: 200px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .businessOwnerBox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Prevent body scroll when modal is open */
+  body.modal-open {
+    overflow: hidden;
+  }
+}

@@ -94,7 +94,7 @@ export default function Contacts() {
     const userJson = sessionStorage.getItem('user');
     if (userJson) {
       const user = JSON.parse(userJson);
-      const uniqueLink = `mateng.co.in/send-message/${user.user_id}`; // Prepend 'mateng.co.in/future/' to the user ID
+      const uniqueLink = `send-message/${user.user_id}`; // Prepend 'mateng.co.in/future/' to the user ID
   
       const { error } = await supabase
         .from('user_links')
