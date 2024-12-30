@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import { Order } from '../../types/order'; // Import the Order interface
+import { supabase } from '../../../lib/supabaseClient';
+import { Order } from '../../../types/order'; // Import the Order interface
 import styles from './OrderData.module.css';
 
 export default function OrderDataPage() {

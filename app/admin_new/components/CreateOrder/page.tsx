@@ -37,36 +37,43 @@ const Page = () => {
   };
 
   const generateOrderID = async () => {
-    const { data } = await supabase.from('order_data').select('id').order('id', { ascending: false }).limit(1);
+    const { data } = await supabase
+      .from('order_data')
+      .select('id')
+      .order('id', { ascending: false })
+      .limit(1);
     const latestID = data?.[0]?.id || 0;
     setFormData((prev) => ({ ...prev, orderType: `ORD-${latestID + 1}` }));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-  
-    // Explicitly type `keys` to help TypeScript recognize valid property names
-    const keys = name.split('.') as [keyof typeof formData, string?];
-  
+
     setFormData((prev) => {
-      if (keys.length === 2) {
-        const [section, key] = keys;
-        return {
-          ...prev,
-          [section]: {
-            ...(prev[section] as Record<string, string>),
-            [key]: value,
-          },
-        };
+      if (name.includes('.')) {
+        const [section, key] = name.split('.') as [keyof typeof formData, string];
+        if (section in prev && typeof prev[section] === 'object') {
+          return {
+            ...prev,
+            [section]: {
+              ...(prev[section] as Record<string, string>),
+              [key]: value,
+            },
+          };
+        }
       }
-      return { ...prev, [keys[0]]: value };
+      return { ...prev, [name]: value };
     });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await supabase.from('order_data').insert({ ...formData, tsb, cid });
-    generateOrderID();
+    try {
+      await supabase.from('order_data').insert({ ...formData, tsb, cid });
+      generateOrderID();
+    } catch (err) {
+      console.error('Error submitting form:', err);
+    }
   };
 
   useEffect(() => {

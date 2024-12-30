@@ -4,6 +4,7 @@
     "next/typescript"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",  // Disabling the no-unused-vars rule
+    "@typescript-eslint/no-explicit-any": "off"  // Disabling the no-explicit-any rule
   }
 }

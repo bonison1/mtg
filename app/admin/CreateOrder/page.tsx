@@ -48,32 +48,6 @@ const Page = () => {
     }
   };
 
-  const handleCellBlur = async (id: string, column: string, value: string) => {
-    setEditingCell(null);
-
-    const recordToUpdate = records.find((record) => record.id === id);
-
-    if (recordToUpdate) {
-      try {
-        const { error } = await supabase
-          .from('order_data')
-          .update({ [column]: value })
-          .eq('id', id);
-
-        if (error) {
-          console.error('Error updating record:', error.message);
-        } else {
-          setRecords((prev) =>
-            prev.map((record) =>
-              record.id === id ? { ...record, [column]: value } : record
-            )
-          );
-        }
-      } catch (err) {
-        console.error('Unexpected error:', err instanceof Error ? err.message : err);
-      }
-    }
-  };
 
   return (
     <Layout>
@@ -82,19 +56,6 @@ const Page = () => {
         <RecordForm vendors={vendors} onSubmitSuccess={fetchRecords} />
 
         <h2 className={styles.heading}>Latest Records</h2>
-        <EditableTable
-          records={records}
-          editingCell={editingCell}
-          handleCellDoubleClick={(id, column) => setEditingCell({ id, column })}
-          handleCellChange={(e, id, column) =>
-            setRecords((prev) =>
-              prev.map((record) =>
-                record.id === id ? { ...record, [column]: e.target.value } : record
-              )
-            )
-          }
-          handleCellBlur={handleCellBlur}
-        />
       </div>
     </Layout>
   );
