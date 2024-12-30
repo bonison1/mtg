@@ -1,0 +1,70 @@
+/* AdminLayout.module.css */
+
+/* General layout styles */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #333;
+  padding: 1rem;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  gap: 1rem; /* Added space between buttons */
+}
+
+/* Button styles */
+.mainButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  flex: 1; /* Ensure buttons take equal width on desktop */
+  max-width: 200px; /* Limit maximum size on larger screens */
+}
+
+.mainButton:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.mainButton:active {
+  transform: scale(1);
+}
+
+/* Main content styles */
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
+  max-width: 1200px;
+  border-radius: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mainButton {
+    width: 100%;
+    text-align: center;
+    max-width: none; /* Remove size limit for smaller screens */
+  }
+}

@@ -1,18 +1,16 @@
-// app/layout.tsx
-
 import '../styles/globals.css';
 import { ReactNode } from 'react';
-import Header from '../app/components/Header';
 import Footer from '../app/components/Footer';
 import { AuthProvider } from '../app/context/AuthContext';
+import ConditionalHeader from './components/ConditionalHeader';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <AuthProvider>
-          <Header />
-          <main className="main-content">{children}</main>
+          <ConditionalHeader /> {/* Header logic moved to a client component */}
+          <main className="flex-1">{children}</main>
           <Footer />
         </AuthProvider>
       </body>

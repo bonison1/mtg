@@ -272,11 +272,8 @@ export default function Dashboard() {
         <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
           My Contacts
         </button>
-        <button onClick={() => router.push('/message_data')} className={styles.messagesButton}>
-          View my Orders
-        </button>
-        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
-          Mateng Delivery History
+        <button onClick={() => router.push('/message_data/sent_message')} className={styles.messagesButton}>
+          Messages
         </button>
       </div>
       

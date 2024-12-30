@@ -1,0 +1,20 @@
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .backButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .backButton:hover {
+    background-color: #005bb5;
+  }
+  

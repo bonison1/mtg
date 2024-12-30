@@ -73,15 +73,13 @@ export default function MessageDataPage() {
     setSelectedOption(selected);
 
     if (selected === 'Sent Orders') {
-      router.push('/sent_message');
+      router.push('/message_data/sent_message');
     } else if (selected === 'Customer Orders') {
       router.push('/message_data');
     } else if (selected === 'Discover') {
       router.push('/discover');
     } else if (selected === 'Messages') {
       router.push('/messages');
-    } else if (selected === 'View Delivery Orders') {
-      router.push('/link');
     }
   };
 
@@ -97,11 +95,8 @@ export default function MessageDataPage() {
         <button onClick={() => router.push('/contacts')} className={styles.messagesButton}>
           My Contacts
         </button>
-        <button onClick={() => router.push('/message_data')} className={styles.messagesCont}>
-          View my Orders
-        </button>
-        <button onClick={() => router.push('/link')} className={styles.messagesButton}>
-          Mateng Delivery History
+        <button onClick={() => router.push('/message_data/sent_message')} className={styles.messagesCont}>
+          Messages
         </button>
       </div>
       

@@ -1,0 +1,44 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16rem; /* Sidebar width */
+  height: 100vh; /* Full height */
+  background-color: #2d3748; /* Dark gray */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0); /* Initially visible */
+  transition: transform 0.3s ease; /* Smooth sliding effect */
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%); /* Slide off-screen to the left */
+}
+
+.sidebar .brand {
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.sidebar nav {
+  flex-grow: 1;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.sidebar nav ul li:hover {
+  background-color: #4a5568; /* Lighter gray */
+}

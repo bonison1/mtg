@@ -1,0 +1,175 @@
+/* General container styling */
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  
+  /* Title styling */
+  .title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Error styling */
+  .error {
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  /* Vendor email selector with search */
+  .selector {
+    margin-bottom: 20px;
+  }
+  
+  .selector label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .selector select,
+  .selector input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .searchResults {
+    margin: 5px 0 0;
+    padding: 0;
+    list-style: none;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  .searchItem {
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .searchItem:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .noResults {
+    padding: 10px;
+    font-size: 1rem;
+    color: #999;
+    text-align: center;
+  }
+  
+  /* Total Balance styling */
+  .totalBalance {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #0050b3;
+  }
+  
+  /* Table Search */
+  .tableSearch {
+    margin-bottom: 20px;
+  }
+  
+  .tableSearch label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .tableSearch input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Data table styling */
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .dataTable th,
+  .dataTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .dataTable th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .dataTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .dataTable tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .dataTable td {
+    font-size: 0.9rem;
+  }
+  
+  /* Pagination controls */
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .pagination button {
+    padding: 8px 15px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  .pagination span {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  

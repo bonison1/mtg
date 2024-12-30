@@ -1,0 +1,58 @@
+.navbar {
+  height: 4rem;
+  background-color: #1a202c; /* Dark gray */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.navbar .toggleButton {
+  background-color: #06631d; /* Slightly lighter gray */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+.navbar .toggleButton:hover {
+  background-color: #016b1b; /* Lighter gray */
+  transform: scale(1.05); /* Slightly larger on hover */
+}
+
+.navbar .title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar .actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar .actions span {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #cbd5e0; /* Light gray */
+}
+
+.navbar .actions .logoutButton {
+  background-color: #e53e3e; /* Red for logout */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+.navbar .actions .logoutButton:hover {
+  background-color: #c53030; /* Darker red */
+}

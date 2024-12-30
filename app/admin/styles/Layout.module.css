@@ -1,0 +1,22 @@
+.layout {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .main {
+    flex-grow: 1;
+    background-color: #f9f9f9; /* Light gray */
+    overflow-y: auto;
+  }
+  
+  .toggle-sidebar-btn {
+    background-color: #2d3748; /* Gray */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+  }
+  
+  .toggle-sidebar-btn:hover {
+    background-color: #4a5568; /* Lighter gray */
+  }
+  
