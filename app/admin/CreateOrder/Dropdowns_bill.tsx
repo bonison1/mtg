@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './crud.module.css'; // Make sure this path is correct
+import styles from './crud.module.css';
 import { supabase } from '../../../lib/supabaseClient';
 
 interface form_data {
@@ -13,7 +13,7 @@ interface form_data {
 }
 
 interface DropdownsProps {
-  formData: form_data;  // Changed to match 'formData' instead of 'form_data'
+  formData: form_data;
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -21,7 +21,6 @@ const Dropdowns_bill: React.FC<DropdownsProps> = ({ formData, handleChange }) =>
   const [vendors, setVendors] = useState<string[]>([]);
   const [teams, setTeams] = useState<string[]>([]);
 
-  // Fetch vendors from the database
   useEffect(() => {
     const fetchVendors = async () => {
       const { data, error } = await supabase
@@ -56,9 +55,17 @@ const Dropdowns_bill: React.FC<DropdownsProps> = ({ formData, handleChange }) =>
     <div>
       <div className={styles.formGroup}>
         <label>PB:</label>
-        <select name="pb" value={formData.pb} onChange={handleChange} className={styles.inputField}>
+        <select
+          name="pb"
+          value={formData.pb}
+          onChange={(e) => {
+            console.log('PB changed:', e.target.value); // Debugging log
+            handleChange(e);
+          }}
+          className={styles.inputField}
+        >
           <option value="">Select PB</option>
-          <option value="Due">Due</option>
+          <option value="Due(by Vendor)">Due(by Vendor)</option>
           <option value="Prepaid">Prepaid</option>
           <option value="COD">COD</option>
         </select>
@@ -66,9 +73,17 @@ const Dropdowns_bill: React.FC<DropdownsProps> = ({ formData, handleChange }) =>
 
       <div className={styles.formGroup}>
         <label>DC:</label>
-        <select name="dc" value={formData.dc} onChange={handleChange} className={styles.inputField}>
+        <select
+          name="dc"
+          value={formData.dc}
+          onChange={(e) => {
+            console.log('DC changed:', e.target.value); // Debugging log
+            handleChange(e);
+          }}
+          className={styles.inputField}
+        >
           <option value="">Select DC</option>
-          <option value="Due">Due</option>
+          <option value="Due(by Vendor)">Due(by Vendor)</option>
           <option value="Prepaid">Prepaid</option>
           <option value="COD">COD</option>
         </select>

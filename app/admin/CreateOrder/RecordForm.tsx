@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from '../styles/RecordForm.module.css';
 import Dropdowns from './Dropdowns';
 import Dropdowns_bill from './Dropdowns_bill';
@@ -47,7 +47,9 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
     let tsb = 0;
     let cid = 0;
 
-    if (formData.dc === 'Due' && formData.pb === 'COD') {
+    console.log('Calculating values:', { dc: formData.dc, pb: formData.pb });
+
+    if (formData.dc === 'Due(by Vendor)' && formData.pb === 'COD') {
       tsb = pbAmt - dcAmt;
       cid = pbAmt;
     } else if (formData.dc === 'Prepaid' && formData.pb === 'COD') {
@@ -56,8 +58,11 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
     } else if (formData.dc === 'COD' && formData.pb === 'COD') {
       tsb = pbAmt;
       cid = pbAmt + dcAmt;
-    } else if (formData.dc === 'Due' && formData.pb === 'Prepaid') {
-      tsb = pbAmt - dcAmt;
+    } else if (formData.dc === 'Due(by Vendor)' && formData.pb === 'Prepaid') {
+      tsb = -dcAmt;
+      cid = 0;
+    } else if (formData.dc === 'Prepaid' && formData.pb === 'Due(by Vendor)') {
+      tsb = -pbAmt ;
       cid = 0;
     } else if (formData.dc === 'Prepaid' && formData.pb === 'Prepaid') {
       tsb = 0;
@@ -65,12 +70,25 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
     } else if (formData.dc === 'COD' && formData.pb === 'Prepaid') {
       tsb = 0;
       cid = dcAmt;
-    } else if (formData.dc === 'Due' && formData.pb === 'Due') {
+    } else if (formData.dc === 'COD' && formData.pb === 'Due(by Vendor)') {
+      tsb = -pbAmt;
+      cid = dcAmt;
+    }else if (formData.dc === 'Due(by Vendor)' && formData.pb === 'Due(by Vendor)') {
       tsb = -pbAmt - dcAmt;
       cid = 0;
     }
 
     return { tsb, cid };
+  };
+
+  const calculatedValues = useMemo(() => {
+    console.log('Recalculating values with:', formData);
+    return calculateValues();
+  }, [formData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(`${e.target.name} changed to: ${e.target.value}`);
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleVendorCheckboxChange = (
@@ -122,11 +140,13 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
       vendor_email: selectedVendor.email,
       pbAmt: Number(formData.pbAmt) || 0,
       dcAmt: Number(formData.dcAmt) || 0,
-      tsb: calculateValues().tsb,
-      cid: calculateValues().cid,
+      tsb: calculatedValues.tsb,
+      cid: calculatedValues.cid,
       type: 'pickupanddrop',
       status: 'pending',
     };
+
+    console.log('Submitting data:', preparedFormData);
 
     try {
       const { error } = await supabase.from('order_data').insert([preparedFormData]);
@@ -159,7 +179,6 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
       <div className={styles.section}>
         <h2>Invoice Details</h2>
         <div>
-        <div>
           <label>Invoice Number:</label>
           <input type="text" value={formData.inv} readOnly />
         </div>
@@ -172,7 +191,6 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
             onChange={(e) => setFormData((prev) => ({ ...prev, date: e.target.value }))}
           />
         </div>
-        </div>
         <Dropdowns
           formData={formData}
           handleChange={(e) =>
@@ -180,8 +198,8 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
           }
         />
       </div>
-<div className={styles.section}>
-      <div>
+
+      <div className={styles.section}>
         <h2>Pickup Details</h2>
         <div>
           <input
@@ -235,7 +253,7 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
         </div>
       </div>
 
-      <div>
+      <div className={styles.section}>
         <h2>Drop Details</h2>
         <div>
           <input
@@ -288,16 +306,13 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
           />
         </div>
       </div>
-      </div>
+
       <div className={styles.section}>
         <h2>Billing</h2>
         <Dropdowns_bill
           formData={formData}
-          handleChange={(e) =>
-            setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-          }
+          handleChange={handleChange}
         />
-        <div>
         <div>
           <label>PB Amount:</label>
           <input
@@ -320,18 +335,15 @@ const RecordForm: React.FC<RecordFormProps> = ({ vendors, onSubmitSuccess }) => 
             }
           />
         </div>
-        </div>
-
         <div>
           <label>TSB:</label>
-          <input type="number" value={calculateValues().tsb} readOnly />
+          <input type="number" value={calculatedValues.tsb} readOnly />
         </div>
         <div>
           <label>CID:</label>
-          <input type="number" value={calculateValues().cid} readOnly />
+          <input type="number" value={calculatedValues.cid} readOnly />
         </div>
       </div>
-
 
       <button type="submit">Submit</button>
     </form>
